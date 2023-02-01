@@ -5,7 +5,7 @@ from pathlib import Path
 import time
 from datetime import datetime
 import os
-
+import requests
 
 def cleanLogs(log_path):
     cache_list = os.listdir(log_path)
@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     video_capture = cv2.VideoCapture(0)
 
-    seconds = 0
+    send_delay = 0
 
     # main loop that will keep running
     while True:
@@ -95,11 +95,11 @@ if __name__ == "__main__":
         Last sent image was 10 seconds or more ago
         width and height of the detected face is greater than 100, aka someone who is close enough to the doorbell. 
         """
-        if weights > 5 and time.time() > seconds and w > 100 and h > 100:
+        if weights > 5 and time.time() > send_delay and w > 100 and h > 100:
             print("Taking a photo, cheese!")
             print("width = ", w, "  height = ", h)
-            seconds = time.time()
-            seconds += 10
+            send_delay = time.time()
+            send_delay += 10
             # possibly send two different images. One with just the face, and one the entire frame with or without the bounding box
             cv2.imwrite(
                 os.path.join(
@@ -107,7 +107,6 @@ if __name__ == "__main__":
                 ),
                 save_frame,
             )
-
         # Display the resulting frame
         cv2.imshow("Video", frame)
 
