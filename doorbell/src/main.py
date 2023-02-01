@@ -7,6 +7,7 @@ from datetime import datetime
 import os
 import requests
 
+
 def cleanLogs(log_path):
     cache_list = os.listdir(log_path)
     current_date_time = datetime.now().strftime("%m-%d-%Y,%H-%M-%S")
@@ -107,6 +108,14 @@ if __name__ == "__main__":
                 ),
                 save_frame,
             )
+            """
+            url = "http://100.112.129.66"
+            files = {'media': open(os.path.join(log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"), 'rb')}
+            try:
+                requests.post(url, files=files)
+            except:
+                print("Failed to send")
+            """
         # Display the resulting frame
         cv2.imshow("Video", frame)
 
