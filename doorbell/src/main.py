@@ -4,16 +4,54 @@ import socket  # maybe use this for sending files, but if there's a library that
 from pathlib import Path
 import time
 from datetime import datetime
+from datetime import timedelta
 import os
-import requests
+import re
+
+# For AWS S3 connection
+import boto3
+from botocore.exceptions import NoCredentialsError
+
+# deletes all files from the past 10 minutes from local storage on the doorbell
+# probably not needed, as the file now immediately gets sent to AWS S3 bucket
+def cleanLogs():
+    log_directory = str(Path(__file__).parent.parent) + r"\logs"
+    for file_name in os.listdir(log_directory):
+        date_of_file = datetime.strptime(
+            file_name.replace(".jpg", ""), "%m-%d-%Y,%H-%M-%S"
+        )
+        present = datetime.now()
+        if date_of_file < (present - timedelta(minutes=10)):
+            os.remove(str(Path(__file__).parent.parent) + r"\logs\\" + file_name)
 
 
-def cleanLogs(log_path):
-    cache_list = os.listdir(log_path)
-    current_date_time = datetime.now().strftime("%m-%d-%Y,%H-%M-%S")
+# uploads files to AWS S3 bucket. Make sure that the aws.credentials file is in the data folder
+def upload_to_aws(local_file, bucket, s3_file, login_info):
+    ACCESS_KEY = login_info[0]
+    SECRET_KEY = login_info[1]
+    s3 = boto3.client(
+        "s3", aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_KEY
+    )
+
+    try:
+        s3.upload_file(local_file, bucket, s3_file)
+        print("Upload Successful")
+        return True
+    except FileNotFoundError:
+        print("The file was not found")
+        return False
+    except NoCredentialsError:
+        print("Credentials not available")
+        return False
 
 
 if __name__ == "__main__":
+    # Connect to AWS S3 bucket
+    textfile = open(str(Path(__file__).parent.parent) + r"\data\aws.credentials", "r")
+    filetext = textfile.read()
+    textfile.close()
+    login_info = re.findall("ACCESS_KEY: (.*)\nSECRET_KEY: (.*)", filetext)[0]
+
     casc_path = (
         str(Path(__file__).parent.parent) + r"\data\haarcascade_frontalface_default.xml"
     )
@@ -27,7 +65,7 @@ if __name__ == "__main__":
     # main loop that will keep running
     while True:
         # cleans old pictures from log folder
-        cleanLogs(log_path)
+        cleanLogs()
 
         # Capture frame-by-frame
         ret, frame = video_capture.read()
@@ -36,12 +74,6 @@ if __name__ == "__main__":
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # detect a face
-        """
-        Not very robust in low-light conditions and if not facing camera
-        Fix is either more data of other conditions or find a different library
-        Compreface has facial detection, but is a separate program that runs parallel in a docker
-        Compreface has also not been tested to see how it compares
-        """
         # detectMultiscale was bounding box values, but no weight output
         faces = face_cascade.detectMultiScale(
             gray,
@@ -97,25 +129,23 @@ if __name__ == "__main__":
         width and height of the detected face is greater than 100, aka someone who is close enough to the doorbell. 
         """
         if weights > 5 and time.time() > send_delay and w > 100 and h > 100:
-            print("Taking a photo, cheese!")
-            print("width = ", w, "  height = ", h)
             send_delay = time.time()
             send_delay += 10
             # possibly send two different images. One with just the face, and one the entire frame with or without the bounding box
+            file_name = os.path.join(
+                log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"
+            )
             cv2.imwrite(
-                os.path.join(
-                    log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"
-                ),
+                file_name,
                 save_frame,
             )
-            """
-            url = "http://100.112.129.66"
-            files = {'media': open(os.path.join(log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"), 'rb')}
-            try:
-                requests.post(url, files=files)
-            except:
-                print("Failed to send")
-            """
+            upload_to_aws(
+                file_name,
+                "argusexchange",
+                datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg",
+                login_info,
+            )
+
         # Display the resulting frame
         cv2.imshow("Video", frame)
 
