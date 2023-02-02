@@ -12,6 +12,7 @@ import re
 import boto3
 from botocore.exceptions import NoCredentialsError
 
+
 # deletes all files from the past 10 minutes from local storage on the doorbell
 # probably not needed, as the file now immediately gets sent to AWS S3 bucket
 def cleanLogs():
@@ -120,7 +121,7 @@ if __name__ == "__main__":
                 cv2.LINE_AA,
             )
         # Draw a rectangle around the faces
-        for (x, y, w, h) in faces:
+        for x, y, w, h in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         """
         Conditions:
