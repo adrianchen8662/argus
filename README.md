@@ -11,4 +11,4 @@
 # Credits
 
 # License
-This project is released under the GPL-3.0 license. For the full software bill of materials, SBOM, please see this document. 
+This project is released under the [GPL-3.0 license](https://github.com/adrianchen8662/argus/blob/main/README.md). For the full software bill of materials, SBOM, please see this document. 
