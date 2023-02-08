@@ -1,9 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
 #header {
     /* min-height: 100vh; */
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    position: relative;
     align-items: center;
     justify-content: center;
+    font-family: 'Inter', sans-serif;
     font-size: calc(10px + 2vmin);
-    color: #23022E;
+    color: #000;
+}
+
+#familyButton {
+    height: 5vh;
+    border: 4px solid #000;
+    border-radius: 50% 50% 50% 50%;
+}
+
+#infoButton {
+    height: 6vh;
+}
+
+#infoButtonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    right: 10vh;
+}
+
+#closeButton {
+    height: 6vh;
+}
+
+#familyButtonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    left: 10vh;
+}
+
+#familyButtonContainer span {
+    vertical-align: middle;
+    font-family: 'Inter', sans-serif;
+    font-size: 2vmin;
+    text-align: center;
+    height: 2vmin;
+    width: 88px;
+}
+
+.ModalScreen {
+    /* background-color: #fff; */
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    margin: 0 auto;
+    z-index: 2;
+}
+
+.Modal {
+    background-color: #fff;
+    width: 60%;
+    position: absolute;
+    height: 60%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 5px solid #1F2041;
+    border-radius: 2%;
+    padding: 2vmin;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+hr {
+    color: #000;
 }

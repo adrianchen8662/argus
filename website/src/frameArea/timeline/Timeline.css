@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded&display=swap');
 #timeline {
     width: 80%;
     display: flex;
@@ -16,28 +18,57 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #F2B880;
 }
 
 .timelineEventText {
     margin: 10px;
 }
 
+.timelineEventTime {
+    text-align: center;
+}
+
+.Delivery span {
+    background-color: #1F2041;
+}
+
+.Unknown span {
+    background-color: #BF3100;
+}
+
+.Family span {
+    background-color: #8EA604;
+}
+
+.infoButton {
+    background-color: #000;
+    color: rgba(255, 248, 240, 0);
+    border-radius: 100%;
+    font-size: 10px;
+}
+
 .timelineEventText span {
-    background-color: #F2B880;
-    color: #32373B;
+    font-family: 'Unbounded', cursive;
+    color: #FFF8F0;
     border-radius: 10px;
     padding: 10px;
 }
 
+
+/* BF3100 RED */
+
+
+/* 8EA604 GREEN */
+
 .timelineEventTime span {
-    color: #32373B;
-    font-size: 16px;
+    font-family: 'Libre Baskerville', serif;
+    color: #080708;
+    font-size: 20px;
 }
 
 .timelineEventVL {
     height: 50px;
     flex: none;
     width: 0;
-    border-left: 2px solid #F2B880;
+    border-left: 2px solid #f2b880;
 }

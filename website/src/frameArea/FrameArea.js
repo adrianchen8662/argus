@@ -1,7 +1,7 @@
-import './FrameArea.css';
-import React from 'react';
-import Frame from './frame/Frame';
-import Timeline from './timeline/Timeline';
+import "./FrameArea.css";
+import React from "react";
+import Frame from "./frame/Frame";
+import Timeline from "./timeline/Timeline";
 
 class FrameArea extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class FrameArea extends React.Component {
 
   render() {
     return (
-      <div id="frameArea">
+      <div id="frameArea" className="movingIn">
         <Frame />
         <Timeline />
       </div>
