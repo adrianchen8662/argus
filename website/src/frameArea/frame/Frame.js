@@ -1,5 +1,5 @@
-import './Frame.css';
-import React from 'react';
+import "./Frame.css";
+import React from "react";
 
 class Frame extends React.Component {
   constructor(props) {
@@ -10,7 +10,7 @@ class Frame extends React.Component {
   render() {
     return (
       <div className="frame">
-        <img src="https://dummyimage.com/640x480/000/f2b780" alt="Test Frame" />
+        <img src="https://dummyimage.com/640x480/ffffff/000000" alt="Test Frame" />
       </div>
     );
   }
