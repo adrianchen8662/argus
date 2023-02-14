@@ -1,6 +1,6 @@
 body {
     background: rgb(254, 200, 154);
-    background: radial-gradient(circle, rgba(254, 200, 154, 1) 0%, rgba(216, 226, 220, 1) 79%);
+    background: radial-gradient(circle, rgba(254, 200, 154, 1) 0%, rgb(195, 222, 206) 79%);
     /* backdrop-filter: blur(5px); */
 }
 
