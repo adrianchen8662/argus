@@ -1,3 +1,5 @@
-logs/*
-*.credentials
-test/*
+logs/
+test/
+autoupdate.json
+connectsettings.json
+__pycache__
