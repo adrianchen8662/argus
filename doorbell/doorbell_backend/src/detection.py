@@ -13,7 +13,8 @@ import logupdate
 
 if __name__ == "__main__":
     casc_path = (
-        str(Path(__file__).parent.parent) + r"\\data\\haarcascade_frontalface_default.xml"
+        str(Path(__file__).parent.parent)
+        + r"\\data\\haarcascade_frontalface_default.xml"
     )
     log_path = str(Path(__file__).parent.parent) + r"\\logs"
     face_cascade = cv2.CascadeClassifier(casc_path)
@@ -94,18 +95,16 @@ if __name__ == "__main__":
             send_delay += 10
             # possibly send two different images. One with just the face, and one the entire frame with or without the bounding box
             file_name = str(int(time.time())) + ".jpg"
-            file_path = os.path.join(
-                log_path, str(int(time.time())) + ".jpg"
-            )
+            file_path = os.path.join(log_path, str(int(time.time())) + ".jpg")
             cv2.imwrite(
                 file_path,
                 save_frame,
             )
             # send file here
-            if connect.sendFrame(file_path,file_name) == True:
-                logupdate.updateLogs(log_path,file_name,"Sent")
+            if connect.sendFrame(file_path, file_name) == True:
+                logupdate.updateLogs(log_path, file_name, "Sent")
             else:
-                logupdate.updateLogs(log_path,file_name,"Not Sent")
+                logupdate.updateLogs(log_path, file_name, "Not Sent")
 
         # Display the resulting frame
         cv2.imshow("Video", frame)

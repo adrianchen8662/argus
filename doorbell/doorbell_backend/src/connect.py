@@ -6,11 +6,12 @@ import os
 # TODO: comment and annotate code
 # TODO: do more vigorous error checking and prevent crashes when connection cannot be made
 
+
 # returns a true or false if the frame was successfully sent or not.
 def sendFrame(file_to_send, file_name):
     SEPARATOR = "<SEPARATOR>"
     BUFFER_SIZE = 4096
-    
+
     # open the image to send in logs folder
     try:
         file_size = os.path.getsize(file_to_send)
