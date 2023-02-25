@@ -32,12 +32,20 @@ def sendFrame(file_to_send, file_name):
         # if ipv4
         ip_address = address
         s = socket.socket()
-        s.connect((ip_address, port_number))
+        try:
+            s.connect((ip_address, port_number))
+        except:
+            print("Could not connect!")
+            return False
     else:
         # regular domain
         ip_address = socket.gethostbyname(socket.gethostname(address))
         s = socket.socket()
-        s.connect((ip_address, 5001))
+        try:
+            s.connect((ip_address, 5001))
+        except:
+            print("Could not connect!")
+            return False
 
     s.send(f"{file_name}{SEPARATOR}{file_size}".encode())
 

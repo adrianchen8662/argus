@@ -102,7 +102,10 @@ if __name__ == "__main__":
                 save_frame,
             )
             # send file here
-            connect.sendFrame(file_path,file_name)
+            if connect.sendFrame(file_path,file_name) == True:
+                logupdate.updateLogs(log_path,file_name,"Sent")
+            else:
+                logupdate.updateLogs(log_path,file_name,"Not Sent")
 
         # Display the resulting frame
         cv2.imshow("Video", frame)
