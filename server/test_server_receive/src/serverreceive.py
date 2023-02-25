@@ -1,6 +1,8 @@
 import socket
 import os
+import time
 import csv
+import re
 
 SERVER_HOST = "0.0.0.0"
 SERVER_PORT = 5001
@@ -23,13 +25,13 @@ def updateLogs(filename):
         storage_info_writer = csv.writer(
             storage_info, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
         )
-        filename = filename
-        date = filename.split(",")[0]
-        time = filename.split(",")[1].split(".")[0]
+        
+        local_time = time.ctime(int(filename.split(".")[0]))
+        time_to_store = re.search(r"\d{2}:\d{2}:\d{2} ","Sat Feb 25 16:02:45 2023").group(0)[:-1]
+        date_to_store = re.sub(r"\d{2}:\d{2}:\d{2} ","","Sat Feb 25 16:02:45 2023")
         status = "Received"
         identification = "NULL"
-        storage_info_writer.writerow([filename, date, time, status, identification])
-
+        storage_info_writer.writerow([filename, date_to_store, time_to_store, status, identification])
 
 if __name__ == "__main__":
     s = socket.socket()
