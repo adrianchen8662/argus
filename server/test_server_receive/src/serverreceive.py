@@ -11,27 +11,34 @@ BUFFER_SIZE = 4096
 
 SEPARATOR = "<SEPARATOR>"
 
-"""
-List of statuses possible:
-Receieved = 
-Identified = 
-
-"""
-
 
 def updateLogs(filename):
-    # TODO: add if csv file doesn't exist create file and headers
     with open("../../data_storage/storage_info.csv", mode="a") as storage_info:
         storage_info_writer = csv.writer(
             storage_info, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
         )
-        
+
+        if not log_file.is_file():
+            with open(
+                log_path + "/storage_info.csv", mode="w", newline=""
+            ) as storage_info:
+                storage_info_writer = csv.writer(
+                    storage_info,
+                    delimiter=",",
+                    quotechar='"',
+                    quoting=csv.QUOTE_MINIMAL,
+                )
+                storage_info_writer.writerow(["Filename", "Date", "Time", "Status"])
+
         local_time = time.ctime(int(filename.split(".")[0]))
-        time_to_store = re.search(r"\d{2}:\d{2}:\d{2} ","Sat Feb 25 16:02:45 2023").group(0)[:-1]
-        date_to_store = re.sub(r"\d{2}:\d{2}:\d{2} ","","Sat Feb 25 16:02:45 2023")
+        time_to_store = re.search(r"\d{2}:\d{2}:\d{2} ", local_time).group(0)[:-1]
+        date_to_store = re.sub(r"\d{2}:\d{2}:\d{2} ", "", local_time)
         status = "Received"
         identification = "NULL"
-        storage_info_writer.writerow([filename, date_to_store, time_to_store, status, identification])
+        storage_info_writer.writerow(
+            [filename, date_to_store, time_to_store, status, identification]
+        )
+
 
 if __name__ == "__main__":
     s = socket.socket()
