@@ -1,20 +1,19 @@
 # TODO: prune imports to specific functions from libraries to reduce .exe size
-# TODO: move some of the functions out of detection to main. This should now only serve as video capture and detection
 import cv2
 import sys
 from pathlib import Path
 import time
 from datetime import datetime
+from datetime import timezone
 from datetime import timedelta
 import os
 
 import connect
-import autoclean
+import logupdate
 
 if __name__ == "__main__":
     casc_path = (
-        str(Path(__file__).parent.parent)
-        + r"\\data\\haarcascade_frontalface_default.xml"
+        str(Path(__file__).parent.parent) + r"\\data\\haarcascade_frontalface_default.xml"
     )
     log_path = str(Path(__file__).parent.parent) + r"\\logs"
     face_cascade = cv2.CascadeClassifier(casc_path)
@@ -94,16 +93,16 @@ if __name__ == "__main__":
             send_delay = time.time()
             send_delay += 10
             # possibly send two different images. One with just the face, and one the entire frame with or without the bounding box
-            file_name = datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"
+            file_name = str(int(time.time())) + ".jpg"
             file_path = os.path.join(
-                log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"
+                log_path, str(int(time.time())) + ".jpg"
             )
             cv2.imwrite(
                 file_path,
                 save_frame,
             )
             # send file here
-            connect.sendFrame(file_path, file_name)
+            connect.sendFrame(file_path,file_name)
 
         # Display the resulting frame
         cv2.imshow("Video", frame)
