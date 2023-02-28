@@ -1,0 +1,50 @@
+.timelineFrame {
+    width: calc(640px/3);
+    margin: 5px;
+    background-color: #FFF8F0;
+    display: flex;
+    flex-direction: column;
+}
+
+.timelineAlbumText {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 10px;
+}
+
+.timelineFrameDetails {
+    padding: 10px 0px;
+}
+
+.timelineAlbumText span {}
+
+.timelineAlbumText .timelineAlbumType {
+    padding: 10px;
+    font-family: 'Unbounded', cursive;
+    color: #FFF8F0;
+    border-radius: 10px;
+    width: 55px;
+    margin-left: 10px;
+    text-align: center;
+}
+
+.timelineAlbumFrameTimeContainer {
+    margin-left: 10px;
+}
+
+.timelineAlbumText .timelineAlbumTime {
+    font-family: 'Libre Baskerville', serif;
+    color: #080708;
+    font-size: 20px;
+    display: inline-block;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.timelineAlbumDate {
+    font-size: 15px!important;
+}
