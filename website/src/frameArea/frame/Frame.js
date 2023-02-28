@@ -8,9 +8,14 @@ class Frame extends React.Component {
   }
 
   render() {
+    const images = require.context('../../../public/img/data_storage', true);
+    const { imgSrc, imgId, type } = this.props; 
+    const img = images(`./${imgSrc}.jpg`);
+    // const date = getDateFromImgSrc(imgSrc);
+    // const time = getTimeFromImgSrc(imgSrc);
     return (
-      <div className="frame">
-        <img src="https://dummyimage.com/640x480/ffffff/000000" alt="Test Frame" />
+      <div className={`frame frame-${type}`} id={imgId}>
+        <img src={`${img}`} alt="Test Frame" />
       </div>
     );
   }

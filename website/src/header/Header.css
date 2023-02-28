@@ -1,53 +1,105 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded&display=swap');
 #header {
     /* min-height: 100vh; */
+    top: 0;
+    width: 80%;
+    padding: 20px 10%;
+    height: 90px;
     display: flex;
     flex-direction: row;
     position: relative;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     font-family: 'Inter', sans-serif;
     font-size: calc(10px + 2vmin);
     color: #000;
+    background-color: #F7F0F5;
+    border-bottom: 4px solid #000;
+    /*#F7F0F5;*/
+    position: fixed;
+    user-select: none;
+}
+
+#logoHeader {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#logoImg {
+    height: 5vh;
+    padding-right: 10px;
+}
+
+.logoHead {
+    border-right: 3px #000 solid;
+}
+
+.headerCurrentHeading {
+    height: 3vh;
+    padding-left: 10px;
 }
 
 #familyButton {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     height: 5vh;
-    border: 4px solid #000;
-    border-radius: 50% 50% 50% 50%;
+    border: 2px solid #000;
+    /* border-radius: 50% 50% 50% 50%; */
 }
 
-#infoButton {
-    height: 6vh;
+#frameButton {
+    height: 5vh;
 }
 
-#infoButtonContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    right: 10vh;
+#timelineButton {
+    height: 5vh;
+}
+
+#eyeButton {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    height: 5vh;
+    /* border-radius: 50% 50% 50% 50%; */
 }
 
 #closeButton {
     height: 6vh;
 }
 
-#familyButtonContainer {
+.headerButtonContainer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    position: absolute;
-    left: 10vh;
+    /* margin: auto 5%; */
+    cursor: pointer;
+    margin-right: 10px;
+    padding: 10px;
+    border: 4px solid #F7F0F5;
+    border-radius: 10px;
 }
 
-#familyButtonContainer span {
+.headerButtonContainer:hover {
+    border: 4px solid #000;
+    /* animation: 1s infinite alternate border-bounce; */
+}
+
+.headerButtonContainer span {
     vertical-align: middle;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Unbounded', sans-serif;
     font-size: 2vmin;
-    text-align: center;
+    /* text-align: center; */
+    padding-left: 10px;
     height: 2vmin;
     width: 88px;
+    /* opacity: 0%; */
 }
 
 .ModalScreen {
@@ -82,4 +134,10 @@
 
 hr {
     color: #000;
+}
+
+@media (max-width: 1000px) {
+    #logoHeader {
+        display: none;
+    }
 }

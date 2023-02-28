@@ -12,4 +12,7 @@ parserOptions:
 plugins:
   - react
 rules:
-  { "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }] }
+  { "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }] ,
+  "react/prop-types": "off",
+  "no-param-reassign": 0,
+  "default-param-last": 0}
