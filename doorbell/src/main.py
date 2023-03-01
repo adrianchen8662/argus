@@ -12,13 +12,14 @@ def cleanLogs(log_path):
     cache_list = os.listdir(log_path)
     current_date_time = datetime.now().strftime("%m-%d-%Y,%H-%M-%S")
 
+import constants
 
-if __name__ == "__main__":
-    casc_path = (
-        str(Path(__file__).parent.parent) + r"\data\haarcascade_frontalface_default.xml"
-    )
-    log_path = str(Path(__file__).parent.parent) + r"\logs"
-    face_cascade = cv2.CascadeClassifier(casc_path)
+import connect
+import logupdate
+import encrypt
+
+def detection():
+    face_cascade = cv2.CascadeClassifier(constants.FACE_REG_DATA_PATH)
 
     video_capture = cv2.VideoCapture(0)
 
@@ -102,20 +103,26 @@ if __name__ == "__main__":
             send_delay = time.time()
             send_delay += 10
             # possibly send two different images. One with just the face, and one the entire frame with or without the bounding box
+            file_name = str(int(time.time())) + ".jpg"
+            file_path = os.path.join(constants.LOG_PATH, file_name)
+            encoded_file_name = str(int(time.time())) + ".enc"
+            encoded_file_path = os.path.join(constants.LOG_PATH, encoded_file_name)
             cv2.imwrite(
                 os.path.join(
                     log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"
                 ),
                 save_frame,
             )
-            """
-            url = "http://100.112.129.66"
-            files = {'media': open(os.path.join(log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"), 'rb')}
-            try:
-                requests.post(url, files=files)
-            except:
-                print("Failed to send")
-            """
+
+            # encrypt file
+            encrypt.encode(file_path,encoded_file_path)
+
+            # send file
+            if connect.sendFrame(encoded_file_path, encoded_file_name) == True:
+                logupdate.updateLogs(file_name, "Sent")
+            else:
+                logupdate.updateLogs(file_name, "Not Sent")
+
         # Display the resulting frame
         cv2.imshow("Video", frame)
 
