@@ -1,1 +1,5 @@
-*.jpg
+logs/
+test/
+autoupdate.json
+connectsettings.json
+__pycache__

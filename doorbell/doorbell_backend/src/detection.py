@@ -1,23 +1,22 @@
+# TODO: prune imports to specific functions from libraries to reduce .exe size
 import cv2
 import sys
-import socket  # maybe use this for sending files, but if there's a library that does HTTPS connections use that instead
 from pathlib import Path
 import time
 from datetime import datetime
+from datetime import timezone
+from datetime import timedelta
 import os
-import requests
 
-
-def cleanLogs(log_path):
-    cache_list = os.listdir(log_path)
-    current_date_time = datetime.now().strftime("%m-%d-%Y,%H-%M-%S")
-
+import connect
+import logupdate
 
 if __name__ == "__main__":
     casc_path = (
-        str(Path(__file__).parent.parent) + r"\data\haarcascade_frontalface_default.xml"
+        str(Path(__file__).parent.parent)
+        + r"\\data\\haarcascade_frontalface_default.xml"
     )
-    log_path = str(Path(__file__).parent.parent) + r"\logs"
+    log_path = str(Path(__file__).parent.parent) + r"\\logs"
     face_cascade = cv2.CascadeClassifier(casc_path)
 
     video_capture = cv2.VideoCapture(0)
@@ -27,7 +26,7 @@ if __name__ == "__main__":
     # main loop that will keep running
     while True:
         # cleans old pictures from log folder
-        cleanLogs(log_path)
+        # autoclean.cleanLogs(log_path) IMPLEMENT
 
         # Capture frame-by-frame
         ret, frame = video_capture.read()
@@ -36,12 +35,6 @@ if __name__ == "__main__":
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # detect a face
-        """
-        Not very robust in low-light conditions and if not facing camera
-        Fix is either more data of other conditions or find a different library
-        Compreface has facial detection, but is a separate program that runs parallel in a docker
-        Compreface has also not been tested to see how it compares
-        """
         # detectMultiscale was bounding box values, but no weight output
         faces = face_cascade.detectMultiScale(
             gray,
@@ -61,6 +54,7 @@ if __name__ == "__main__":
         )
         weights = str(face_confidence[2])
         # detectMultiscale outputs a list of rectangles. This takes the first rectangle and gets the weight, if an entry exists
+        # Not sure if face_confidence lists the values in order of weight from most confident to least
         try:
             (face_confidence[2][0])
         except:
@@ -88,7 +82,7 @@ if __name__ == "__main__":
                 cv2.LINE_AA,
             )
         # Draw a rectangle around the faces
-        for (x, y, w, h) in faces:
+        for x, y, w, h in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         """
         Conditions:
@@ -97,25 +91,21 @@ if __name__ == "__main__":
         width and height of the detected face is greater than 100, aka someone who is close enough to the doorbell. 
         """
         if weights > 5 and time.time() > send_delay and w > 100 and h > 100:
-            print("Taking a photo, cheese!")
-            print("width = ", w, "  height = ", h)
             send_delay = time.time()
             send_delay += 10
             # possibly send two different images. One with just the face, and one the entire frame with or without the bounding box
+            file_name = str(int(time.time())) + ".jpg"
+            file_path = os.path.join(log_path, str(int(time.time())) + ".jpg")
             cv2.imwrite(
-                os.path.join(
-                    log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"
-                ),
+                file_path,
                 save_frame,
             )
-            """
-            url = "http://100.112.129.66"
-            files = {'media': open(os.path.join(log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"), 'rb')}
-            try:
-                requests.post(url, files=files)
-            except:
-                print("Failed to send")
-            """
+            # send file here
+            if connect.sendFrame(file_path, file_name) == True:
+                logupdate.updateLogs(log_path, file_name, "Sent")
+            else:
+                logupdate.updateLogs(log_path, file_name, "Not Sent")
+
         # Display the resulting frame
         cv2.imshow("Video", frame)
 
