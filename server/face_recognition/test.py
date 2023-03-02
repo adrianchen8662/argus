@@ -16,4 +16,3 @@ recognition: RecognitionService = compre_face.init_face_recognition(API_KEY)
 face_collection: FaceCollection = recognition.get_face_collection()
 
 subjects: Subjects = recognition.get_subjects()
-
