@@ -1,0 +1,16 @@
+{
+    "Connection Settings": [
+        {
+            "Address/Domain": "100.106.18.99"
+        },
+        {
+            "Port": "5001"
+        },
+        {
+            "AES Encryption Password": "ThisIsAVerySecurePassword"
+        },
+        {
+            "Connection Status": "True"
+        }
+    ]
+}
