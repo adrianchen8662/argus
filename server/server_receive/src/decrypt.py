@@ -1,11 +1,12 @@
 from Crypto.Cipher import AES
 from Crypto import Random
-import json
+from json import load
+from os import remove
 
+import constants
 
 def decode(input_file_path, output_file_path):
-    # get from connectsettings.json
-    config = json.load(open("../../settings/connectsettings.json"))
+    config = load(open(constants.CONNECT_SETTINGS_PATH))
     password = config["Connection Settings"][0]["AES Encryption Password"]
 
     password = str.encode(password)
@@ -20,3 +21,5 @@ def decode(input_file_path, output_file_path):
 
     with open(output_file_path, "wb") as output_file:
         output_file.write(plain_data)
+
+    remove(input_file_path)

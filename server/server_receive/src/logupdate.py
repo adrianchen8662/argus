@@ -3,11 +3,12 @@ import csv
 import re
 from pathlib import Path
 
+import constants
 
 def updateLogs(filename):
-    if not Path("../../data_storage/storage_info.csv").is_file():
+    if not Path(constants.LOG_FILE_PATH).is_file():
         with open(
-            "../../data_storage/storage_info.csv", mode="w", newline=""
+            constants.LOG_FILE_PATH, mode="w", newline=""
         ) as storage_info:
             storage_info_writer = csv.writer(
                 storage_info,
@@ -19,7 +20,7 @@ def updateLogs(filename):
                 ["Filename", "Date", "Time", "Status", "Identification"]
             )
 
-    with open("../../data_storage/storage_info.csv", mode="a") as storage_info:
+    with open(constants.LOG_FILE_PATH, mode="a") as storage_info:
         storage_info_writer = csv.writer(
             storage_info, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
         )
