@@ -34,7 +34,6 @@ if __name__ == "__main__":
             "../../data_storage/" + filename,
             "../../data_storage/" + filename.split(".")[0] + ".jpg",
         )
-        
 
     client_socket.close()
     s.close()

@@ -6,6 +6,7 @@ import re
 
 import constants
 
+
 def updateLogs(filename):
     with open(constants.LOG_FILE_PATH, mode="a") as storage_info:
         storage_info_writer = csv.writer(
@@ -13,9 +14,7 @@ def updateLogs(filename):
         )
 
         if not log_file.is_file():
-            with open(
-                constants.LOG_FILE_PATH, mode="w", newline=""
-            ) as storage_info:
+            with open(constants.LOG_FILE_PATH, mode="w", newline="") as storage_info:
                 storage_info_writer = csv.writer(
                     storage_info,
                     delimiter=",",

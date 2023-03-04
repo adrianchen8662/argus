@@ -5,11 +5,10 @@ from pathlib import Path
 
 import constants
 
+
 def updateLogs(filename):
     if not Path(constants.LOG_FILE_PATH).is_file():
-        with open(
-            constants.LOG_FILE_PATH, mode="w", newline=""
-        ) as storage_info:
+        with open(constants.LOG_FILE_PATH, mode="w", newline="") as storage_info:
             storage_info_writer = csv.writer(
                 storage_info,
                 delimiter=",",
