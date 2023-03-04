@@ -32,8 +32,11 @@ if __name__ == "__main__":
                 if not bytes_read:
                     break
                 f.write(bytes_read)
-        
-        decrypt.decode("../../data_storage/"+filename,"../../data_storage/"+filename.split(".")[0]+".jpg")
+
+        decrypt.decode(
+            "../../data_storage/" + filename,
+            "../../data_storage/" + filename.split(".")[0] + ".jpg",
+        )
 
     client_socket.close()
     s.close()

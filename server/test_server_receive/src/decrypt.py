@@ -2,6 +2,7 @@ from Crypto.Cipher import AES
 from Crypto import Random
 import json
 
+
 def decode(input_file_path, output_file_path):
     # get from connectsettings.json
     config = json.load(open("../../settings/connectsettings.json"))
@@ -11,7 +12,7 @@ def decode(input_file_path, output_file_path):
     key = password[:16]
     iv = password[-16:]
 
-    with open(input_file_path,"rb") as input_file:
+    with open(input_file_path, "rb") as input_file:
         input_data = input_file.read()
 
     cfb_decipher = AES.new(key, AES.MODE_CFB, iv)

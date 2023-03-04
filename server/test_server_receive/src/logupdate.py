@@ -3,16 +3,21 @@ import csv
 import re
 from pathlib import Path
 
+
 def updateLogs(filename):
     if not Path("../../data_storage/storage_info.csv").is_file():
-        with open("../../data_storage/storage_info.csv", mode="w", newline="") as storage_info:
+        with open(
+            "../../data_storage/storage_info.csv", mode="w", newline=""
+        ) as storage_info:
             storage_info_writer = csv.writer(
                 storage_info,
                 delimiter=",",
                 quotechar='"',
                 quoting=csv.QUOTE_MINIMAL,
             )
-            storage_info_writer.writerow(["Filename", "Date", "Time", "Status","Identification"])
+            storage_info_writer.writerow(
+                ["Filename", "Date", "Time", "Status", "Identification"]
+            )
 
     with open("../../data_storage/storage_info.csv", mode="a") as storage_info:
         storage_info_writer = csv.writer(
