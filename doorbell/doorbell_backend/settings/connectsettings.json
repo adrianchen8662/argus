@@ -8,6 +8,9 @@
         },
         {
             "AES Encryption Password": "ThisIsAVerySecurePassword"
+        },
+        {
+            "Connection Status": "True"
         }
     ]
 }

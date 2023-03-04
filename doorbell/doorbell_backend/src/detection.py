@@ -1,22 +1,14 @@
 import cv2
-import sys
-import socket  # maybe use this for sending files, but if there's a library that does HTTPS connections use that instead
 from pathlib import Path
-import time
-from datetime import datetime
-import os
-import requests
-
-
-def cleanLogs(log_path):
-    cache_list = os.listdir(log_path)
-    current_date_time = datetime.now().strftime("%m-%d-%Y,%H-%M-%S")
+from time import time
+from os.path import join
 
 import constants
 
 import connect
 import logupdate
 import encrypt
+
 
 def detection():
     face_cascade = cv2.CascadeClassifier(constants.FACE_REG_DATA_PATH)
@@ -27,9 +19,6 @@ def detection():
 
     # main loop that will keep running
     while True:
-        # cleans old pictures from log folder
-        cleanLogs(log_path)
-
         # Capture frame-by-frame
         ret, frame = video_capture.read()
         _, save_frame = video_capture.read()
@@ -89,7 +78,7 @@ def detection():
                 cv2.LINE_AA,
             )
         # Draw a rectangle around the faces
-        for (x, y, w, h) in faces:
+        for x, y, w, h in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         """
         Conditions:
@@ -97,31 +86,26 @@ def detection():
         Last sent image was 10 seconds or more ago
         width and height of the detected face is greater than 100, aka someone who is close enough to the doorbell. 
         """
-        if weights > 5 and time.time() > send_delay and w > 100 and h > 100:
-            print("Taking a photo, cheese!")
-            print("width = ", w, "  height = ", h)
-            send_delay = time.time()
+        if weights > 5 and time() > send_delay and w > 100 and h > 100:
+            send_delay = time()
             send_delay += 10
             # possibly send two different images. One with just the face, and one the entire frame with or without the bounding box
-            file_name = str(int(time.time())) + ".jpg"
-            file_path = os.path.join(constants.LOG_PATH, file_name)
-            encoded_file_name = str(int(time.time())) + ".enc"
-            encoded_file_path = os.path.join(constants.LOG_PATH, encoded_file_name)
-            cv2.imwrite(
-                os.path.join(
-                    log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"
-                ),
-                save_frame,
-            )
+            file_name = str(int(time())) + ".jpg"
+            file_path = join(constants.LOG_PATH, file_name)
+            encoded_file_name = str(int(time())) + ".enc"
+            encoded_file_path = join(constants.LOG_PATH, encoded_file_name)
+            cv2.imwrite(file_path, save_frame)
 
             # encrypt file
-            encrypt.encode(file_path,encoded_file_path)
+            encrypt.encode(file_path, encoded_file_path)
 
             # send file
             if connect.sendFrame(encoded_file_path, encoded_file_name) == True:
                 logupdate.updateLogs(file_name, "Sent")
+                logupdate.updateStatus("True")
             else:
                 logupdate.updateLogs(file_name, "Not Sent")
+                logupdate.updateStatus("False")
 
         # Display the resulting frame
         cv2.imshow("Video", frame)

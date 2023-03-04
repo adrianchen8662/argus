@@ -1,36 +1,32 @@
-import json
-import re
-import socket
-import os
+from json import load
+from re import match
+from socket import gethostbyname, socket
+from os.path import isfile, getsize
 
 import constants
 
-# TODO: comment and annotate code
 
 # returns a true or false if the frame was successfully sent or not.
 def sendFrame(file_to_send, file_name):
-
     # open the image to send in logs folder
-    try:
-        file_size = os.path.getsize(file_to_send)
-    except:
+    if not isfile(file_to_send):
         print("Image not found!")
         return False
-
-    config = json.load(open("../settings/connectsettings.json"))
+    file_size = getsize(file_to_send)
+    config = load(open(constants.CONNECT_SETTINGS_PATH))
     address = config["Connection Settings"][0]["Address/Domain"]
     try:
         port_number = int(config["Connection Settings"][1]["Port"])
     except:
         print("No port number found, using standard port 5001")
 
-    if re.match(
-        r"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
+    if match(
+        constants.IPV4_ADDRESS_REGEX,
         address,
     ):
         # if ipv4
         ip_address = address
-        s = socket.socket()
+        s = socket()
         try:
             s.connect((ip_address, port_number))
         except:
@@ -38,8 +34,8 @@ def sendFrame(file_to_send, file_name):
             return False
     else:
         # regular domain
-        ip_address = socket.gethostbyname(socket.gethostname(address))
-        s = socket.socket()
+        ip_address = gethostbyname(gethostname(address))
+        s = socket()
         try:
             s.connect((ip_address, 5001))
         except:
