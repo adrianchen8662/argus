@@ -8,7 +8,7 @@ import constants
 
 def decode(input_file_path, output_file_path):
     config = load(open(constants.CONNECT_SETTINGS_PATH))
-    password = config["Connection Settings"][0]["AES Encryption Password"]
+    password = config["Connection Settings"][2]["AES Encryption Password"]
 
     password = str.encode(password)
     key = password[:16]

@@ -1,17 +1,18 @@
 import socket
 import os
+from json import load
 
 import logupdate
 import decrypt
 
 import constants
 
-SERVER_HOST = "0.0.0.0"
-SERVER_PORT = 5001
-
 if __name__ == "__main__":
+    config = load(open(constants.CONNECT_SETTINGS_PATH))
+    address = config["Connection Settings"][0]["Address/Domain"]
+    port = int(config["Connection Settings"][1]["Port"])
     s = socket.socket()
-    s.bind((SERVER_HOST, SERVER_PORT))
+    s.bind((address, port))
     s.listen(5)
     while True:
         client_socket, address = s.accept()

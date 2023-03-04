@@ -25,10 +25,10 @@ def updateLogs(filename):
         )
 
         local_time = time.ctime(int(filename.split(".")[0]))
-        time_to_store = re.search(r"\d{2}:\d{2}:\d{2} ", local_time).group(0)[:-1]
-        date_to_store = re.sub(r"\d{2}:\d{2}:\d{2} ", "", local_time)
+        time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[:-1]
+        date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
         status = "Received"
         identification = "NULL"
         storage_info_writer.writerow(
-            [filename, date_to_store, time_to_store, status, identification]
+            [filename[:-4], date_to_store, time_to_store, status, identification]
         )
