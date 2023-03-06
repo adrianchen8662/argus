@@ -1,1 +1,3 @@
 data_storage/
+/logo_detection/images/
+/logo_detection/src/yolov3.pt
