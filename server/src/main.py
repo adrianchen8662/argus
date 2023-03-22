@@ -2,8 +2,10 @@ import socket
 from json import load
 
 import server_receive.connect as connect
+import face_recognition.categorize as categorize
 
 import constants
+
 
 if __name__ == "__main__":
     config = load(open(constants.CONNECT_SETTINGS_PATH))
@@ -16,5 +18,6 @@ if __name__ == "__main__":
 
     while True:
         client_socket = connect.receive_file(s)
+        # TODO: categorize face here
     client_socket.close()
     s.close()

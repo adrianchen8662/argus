@@ -16,7 +16,7 @@ def receive_file(s):
 
     logupdate.updateLogs(filename)
 
-    with open("../data_storage/" + filename, "wb") as f:
+    with open(constants.DATA_STORAGE_FOLDER_PATH + filename, "wb") as f:
         while True:
             bytes_read = client_socket.recv(constants.BUFFER_SIZE)
             if not bytes_read:
@@ -24,8 +24,8 @@ def receive_file(s):
             f.write(bytes_read)
 
     decrypt.decode(
-        "../data_storage/" + filename,
-        "../data_storage/" + filename.split(".")[0] + ".jpg",
+        constants.DATA_STORAGE_FOLDER_PATH + filename,
+        constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg",
     )
 
     return client_socket
