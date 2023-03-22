@@ -1,7 +1,7 @@
 import os
 
-import server_receive.decrypt as decrypt
-import server_receive.logupdate as logupdate
+import decrypt
+import logupdate
 
 import constants
 
