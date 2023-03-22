@@ -6,8 +6,6 @@ from json import load
 
 import constants
 
-# https://github.com/exadel-inc/compreface-python-sdk
-
 
 def addToFaceCollection(image_path, subject):
     config = load(open(constants.COMPREFACE_SETTINGS_PATH))
@@ -34,4 +32,4 @@ def recognizeFace(image_path):
 
     recognition: RecognitionService = compre_face.init_face_recognition(API_KEY)
 
-    recognition.recognize(image_path=image_path)
+    return recognition.recognize(image_path=image_path)

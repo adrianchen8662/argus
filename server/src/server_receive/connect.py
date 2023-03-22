@@ -28,4 +28,4 @@ def receive_file(s):
         constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg",
     )
 
-    return client_socket
+    return constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg"

@@ -16,8 +16,8 @@ if __name__ == "__main__":
     s.bind((address, port))
     s.listen(5)
 
+    # TODO: figure out a way to gracefully exit
     while True:
-        client_socket = connect.receive_file(s)
-        # TODO: categorize face here
-    client_socket.close()
-    s.close()
+        image_path = connect.receive_file(s)
+        return_dict = categorize.recognizeFace(image_path)
+        print(return_dict)
