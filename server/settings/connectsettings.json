@@ -4,7 +4,7 @@
             "Address/Domain": "0.0.0.0"
         },
         {
-            "Port": "5001"
+            "Port": "5050"
         },
         {
             "AES Encryption Password": "ThisIsAVerySecurePassword"
