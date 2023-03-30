@@ -33,8 +33,6 @@ if __name__ == "__main__":
         filename = os.path.basename(filename)
         filesize = int(filesize)
 
-        logupdate.updateLogs(filename)
-
         with open(constants.DATA_STORAGE_FOLDER_PATH + filename, "wb") as f:
             while True:
                 bytes_read = client_socket.recv(constants.BUFFER_SIZE)
@@ -47,8 +45,9 @@ if __name__ == "__main__":
             constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg",
         )
         if Path(constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg").exists():
-            recognize_dict = categorize.recognizeFace(constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg")
-            pprint.pprint(recognize_dict)
-            pprint.pprint(recognize_dict.get("result").get("subjects"))
-            
-            
+            recognize_dict = categorize.recognizeFace(constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg").get("result")[0].get("subjects")[0]
+            # TODO: needs if no face was detected
+            if recognize_dict.get("similarity") < 0.7:
+                logupdate.updateLogs(filename, "Received", "Unknown", 0)
+            else:
+                logupdate.updateLogs(filename, "Received", recognize_dict.get("subject"), recognize_dict.get("similarity"))
