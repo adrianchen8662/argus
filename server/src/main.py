@@ -9,24 +9,24 @@ import server_receive.logupdate as logupdate
 
 import constants
 
-import pprint # for debugging
+import pprint  # for debugging
 
 if __name__ == "__main__":
     config = load(open(constants.CONNECT_SETTINGS_PATH))
     address = config["Connection Settings"][0]["Address/Domain"]
     port = int(config["Connection Settings"][1]["Port"])
-    
+
     s = socket.socket()
-    s.bind(('', port))
+    s.bind(("", port))
     s.listen(5)
-    
+
     while True:
         try:
             pass
         except KeyboardInterrupt:
             client_socket.close()
             s.close()
-        
+
         client_socket, address = s.accept()
         received = client_socket.recv(constants.BUFFER_SIZE).decode()
         filename, filesize = received.split(constants.SEPARATOR)
@@ -44,10 +44,23 @@ if __name__ == "__main__":
             constants.DATA_STORAGE_FOLDER_PATH + filename,
             constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg",
         )
-        if Path(constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg").exists():
-            recognize_dict = categorize.recognizeFace(constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg").get("result")[0].get("subjects")[0]
+        if Path(
+            constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg"
+        ).exists():
+            recognize_dict = (
+                categorize.recognizeFace(
+                    constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg"
+                )
+                .get("result")[0]
+                .get("subjects")[0]
+            )
             # TODO: needs if no face was detected
             if recognize_dict.get("similarity") < 0.7:
                 logupdate.updateLogs(filename, "Received", "Unknown", 0)
             else:
-                logupdate.updateLogs(filename, "Received", recognize_dict.get("subject"), recognize_dict.get("similarity"))
+                logupdate.updateLogs(
+                    filename,
+                    "Received",
+                    recognize_dict.get("subject"),
+                    recognize_dict.get("similarity"),
+                )

@@ -29,5 +29,12 @@ def updateLogs(filename, status, identification, confidence):
         time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[:-1]
         date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
         storage_info_writer.writerow(
-            [filename[:-4], date_to_store, time_to_store, status, identification, confidence]
+            [
+                filename[:-4],
+                date_to_store,
+                time_to_store,
+                status,
+                identification,
+                confidence,
+            ]
         )
