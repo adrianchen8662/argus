@@ -1,5 +1,4 @@
 from Crypto.Cipher import AES
-from Crypto import Random
 from json import load
 from os import remove
 
