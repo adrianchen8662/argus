@@ -2,7 +2,6 @@
 import "./TimelineArea.css";
 import React from "react";
 import { connect } from "react-redux";
-import { ReactComponent as TimelineHead } from "../statics/timelinehead.svg";
 import TimelineFrame from "./timelineFrame/TimelineFrame";
 import { frameDetails } from "../statics/testDetails"
 

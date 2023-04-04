@@ -20,7 +20,6 @@
     border: 5px solid #1F2041;
     margin: 10px;
     overflow: hidden;
-    /* animation: 4s 1 alternate slidein; */
 }
 
 .headerImg {
@@ -35,7 +34,6 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    /* margin: 2%; */
     border-radius: 5%;
     border: 5px solid rgba(0, 0, 0, 0);
     font-size: 25px;
@@ -45,7 +43,6 @@
     border-radius: 5%;
     border: 5px solid #1F2041;
     cursor: pointer;
-    /* animation: bounce 1s infinite alternate; */
 }
 
 .memberDetails span {
@@ -81,8 +78,6 @@
     height: 6vh;
     width: auto;
     cursor: pointer;
-    /* border: 4px solid #000; */
-    /* border-radius: 50% 50% 50% 50%; */
 }
 
 .backButtonContainer {
