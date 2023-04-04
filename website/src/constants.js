@@ -81,6 +81,11 @@ export const getTimeFromImgSrc = (imgSrc) => {
   return calcTime(timestamp);
 }
 
+export const getTimestampFromImgSrc = (imgSrc) => {
+  const timestamp = imgSrc.split('_')[0];
+  return timestamp;
+}
+
 export const TIMELINE_VIEWS = {
   basic_view: "BASIC_VIEW",
   addtofamily_view: "ATOF_VIEW",

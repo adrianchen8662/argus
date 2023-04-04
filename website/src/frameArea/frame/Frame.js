@@ -1,5 +1,7 @@
 import "./Frame.css";
 import React from "react";
+import TimelineEvent from "./timeline/TimelineEvent";
+import { getTimestampFromImgSrc } from "../../constants";
 
 class Frame extends React.Component {
   constructor(props) {
@@ -7,15 +9,15 @@ class Frame extends React.Component {
     this.state = {};
   }
 
+  
   render() {
     const images = require.context('../../../public/img/data_storage', true);
     const { imgSrc, imgId, type } = this.props; 
     const img = images(`./${imgSrc}.jpg`);
-    // const date = getDateFromImgSrc(imgSrc);
-    // const time = getTimeFromImgSrc(imgSrc);
     return (
       <div className={`frame frame-${type}`} id={imgId}>
         <img src={`${img}`} alt="Test Frame" />
+        <TimelineEvent eventType={type} timestamp={getTimestampFromImgSrc(imgSrc)} />
       </div>
     );
   }

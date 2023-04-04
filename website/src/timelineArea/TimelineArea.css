@@ -4,20 +4,15 @@
 }
 
 #timelinePhotosArea {
-    /* min-height: 100vh; */
     padding: 20px;
     width: 80%;
-    /* border-radius: 50px; */
-    /* border: 5px solid #000; */
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     flex-wrap: wrap;
-    /* flex-direction: column; */
     overflow-y: scroll;
     justify-items: center;
     font-size: calc(10px + 2vmin);
     color: #070600;
-    /* margin-top: 30px; */
 }
 
 #timelinePhotosArea img {
