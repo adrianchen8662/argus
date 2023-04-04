@@ -19,8 +19,8 @@ class TimelineFrame extends React.Component {
       <div className={`timelineFrame frame-${type}`} id={imgId}>
         <img src={`${img}`} alt="Test Frame" />
         <div className="timelineFrameDetails">
-          <div className= {`timelineAlbumText ${type}`}>
-            <span className="timelineAlbumType">{type}</span>
+          <div className= "timelineAlbumText">
+            <span className={`timelineAlbumType ${type}`}>{type}</span>
             <div className="timelineAlbumFrameTimeContainer">
               <span className="timelineAlbumTime timelineAlbumDate">{date}</span>
               <span className="timelineAlbumTime">{time}</span>

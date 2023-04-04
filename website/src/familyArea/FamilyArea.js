@@ -2,12 +2,10 @@
 /* eslint react/jsx-no-bind: 0 */
 import "./FamilyArea.css";
 import React from "react";
-import { connect } from "react-redux";
 import FamilyMember from "./familyMember/FamilyMember"
 import { familyDetails } from "../statics/testDetails"
 import { FamilyAreaViews } from "../constants";
 import FamilyMemberFrames from "./familyMember/FamilyMemberFrames";
-import { ReactComponent as FamilyHead } from "../statics/familyhead.svg";
 
 class FamilyArea extends React.PureComponent {
   allMembers = familyDetails.family_members.map((familyMember) => 

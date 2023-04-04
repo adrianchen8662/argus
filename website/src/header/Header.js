@@ -3,10 +3,10 @@
 import "./Header.css";
 import React from "react";
 import { connect } from "react-redux";
-import { ReactComponent as Family } from "../statics/people.svg";
-import { ReactComponent as Frame } from "../statics/frame.svg";
-import { ReactComponent as Info } from "../statics/calendar.svg";
-import { ReactComponent as Eye } from "../statics/eye.svg";
+import { ReactComponent as Family } from "../statics/People_new.svg";
+import { ReactComponent as Frame } from "../statics/Latest.svg";
+import { ReactComponent as Info } from "../statics/calendar_new.svg";
+import { ReactComponent as Eye } from "../statics/eye_new.svg";
 import { ReactComponent as Logo } from "../statics/logo.svg";
 import { ReactComponent as Close } from "../statics/Xmark.svg";
 import { ReactComponent as TimelineHead } from "../statics/timelinehead.svg";
@@ -60,38 +60,36 @@ class Header extends React.Component {
           </div>}
         <div id="header">
           <div id="logoHeader">
-            <Logo id="logoImg" className={currentArea !== Areas.frame_area && "logoHead"}/>
+            {currentArea === Areas.frame_area && <Logo id="logoImg" className="headerCurrentHeading"/>}
             {currentArea === Areas.timeline_area && <TimelineHead className="headerCurrentHeading movingIn"/>}
             {currentArea === Areas.live_area && <LiveHead className="headerCurrentHeading movingIn"/>}
             {currentArea === Areas.family_area && <FamilyHead className="headerCurrentHeading movingIn"/>}
           </div>
-          {currentArea !== Areas.live_area && <div className="headerButtonContainer" onKeyDown={this.handleChangeToLive} onClick={this.handleChangeToLive}>
-            <Eye id="eyeButton" />
-            <span>Live</span>
+          <div id="menuHeader">
+            {currentArea !== Areas.live_area && <div className="headerButtonContainer" onKeyDown={this.handleChangeToLive} onClick={this.handleChangeToLive}>
+              <Eye className="menuSVG" id="eyeButton" />
+              <span>Live</span>
+            </div>
+            }
+            {currentArea !== Areas.family_area && 
+              <div id="familyButtonContainer" className="headerButtonContainer" onKeyDown={this.handleChangeToFamily} onClick={this.handleChangeToFamily}>
+                <Family className="menuSVG" id="familyButton" />
+                <span>Family</span>
+              </div> 
+            }
+            {currentArea !== Areas.frame_area && 
+              <div id="framesButtonContainer" className="headerButtonContainer" onKeyDown={this.handleChangeToFrames} onClick={this.handleChangeToFrames}>
+                <Frame className="menuSVG" id="frameButton" />
+                <span>Latest</span>
+              </div> 
+            }
+            
+            {currentArea !== Areas.timeline_area && 
+            <div id="timelineButtonContainer" className="headerButtonContainer" onKeyDown={this.handleChangeToTimeline} onClick={this.handleChangeToTimeline}>
+              <Info className="menuSVG" id="timelineButton" />
+              <span>Timeline</span>
+            </div>}
           </div>
-          }
-
-          {currentArea !== Areas.family_area && 
-            <div id="familyButtonContainer" className="headerButtonContainer" onKeyDown={this.handleChangeToFamily} onClick={this.handleChangeToFamily}>
-              <Family id="familyButton" />
-              <span>Family</span>
-            </div> 
-          }
-          {currentArea !== Areas.frame_area && 
-            <div id="framesButtonContainer" className="headerButtonContainer" onKeyDown={this.handleChangeToFrames} onClick={this.handleChangeToFrames}>
-              <Frame id="frameButton" />
-              <span>Latest</span>
-            </div> 
-          }
-          
-          {currentArea !== Areas.timeline_area && 
-          <div id="timelineButtonContainer" className="headerButtonContainer" onKeyDown={this.handleChangeToTimeline} onClick={this.handleChangeToTimeline}>
-            <Info id="timelineButton" />
-            <span>Timeline</span>
-          </div>}
-          {/* <div id="logoHeader">
-            <h1>Argus</h1>
-          </div> */}
         </div>
       </>
     );

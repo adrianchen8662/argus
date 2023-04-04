@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded&display=swap');
+#timeline {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.timelineArrow {
+    height: 50px;
+    filter: invert(19%) sepia(6%) saturate(722%) hue-rotate(164deg) brightness(98%) contrast(92%);
+}
+
+.timelineEvent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    user-select: none;
+    backdrop-filter: blur(33px);
+    -webkit-backdrop-filter: blur(33px);
+    background-blend-mode: overlay;
+    box-shadow: 0 10px 15px rgb(0 0 0 / 20%);
+    box-sizing: border-box;
+    padding: 20px 40px;
+}
+
+.timelineEventDetails {
+    flex-grow: 1;
+}
+
+.timelineEventText {
+    margin: 10px;
+}
+
+.timelineEventType {
+    width: 25%;
+}
+
+.timelineEventTimeSection {
+    width: 30%;
+}
+
+.timelineEventTime {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.infoButton {
+    background-color: #000;
+    color: rgba(255, 248, 240, 0);
+    border-radius: 100%;
+    font-size: 10px;
+}
+
+.timelineEventText span {
+    font-family: 'Unbounded', cursive;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.timelineEventTime span {
+    font-family: 'Libre Baskerville', serif;
+    color: #fff;
+    font-size: 20px;
+    display: inline-block;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.timelineEventVL {
+    height: 50px;
+    flex: none;
+    width: 0;
+    border-left: 2px solid #fff;
+}
+
+.notCurrent {
+    display: none;
+}
+
+.timelineEventButtonContainer {
+    font-family: 'Unbounded', cursive;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    width: 100px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.timelineEventButtonContainer span {
+    margin-top: 4px;
+}
+
+.timelineFamilyContainer {
+    font-family: 'Unbounded', cursive;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    height: 75px;
+    width: 350px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.timelineFamilyContainer span {
+    text-overflow: ellipsis;
+}
+
+.timelineYesNo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.timelineEventButton {
+    padding: 4px;
+    border-radius: 10px;
+    height: 4vh;
+    width: auto;
+}
+
+.frameTimelineButtonsContainer {
+    display: flex;
+}
+
+.frameTime {
+    font-size: 40px!important;
+}
+
+.timelineEventFamilyTextHead {
+    font-size: 15px;
+}
+
+.timelineFamilyMList {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    align-items: center;
+}
+
+.timelineFamilyM {
+    flex-shrink: 0;
+    width: 70px;
+    border: 3px solid #fff;
+    border-radius: 10px;
+    text-align: center;
+    text-overflow: ellipsis;
+    margin: 0 10px;
+    padding: 10px;
+}
+
+.timelineFamilyMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+}
+
+@media (max-height: 800px) {
+    .frameTime {
+        font-size: 35px!important;
+    }
+}
