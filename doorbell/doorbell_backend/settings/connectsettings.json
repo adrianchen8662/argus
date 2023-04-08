@@ -10,7 +10,7 @@
             "AES Encryption Password": "ThisIsAVerySecurePassword"
         },
         {
-            "Connection Status": "True"
+            "Connection Status": "False"
         }
     ]
 }
