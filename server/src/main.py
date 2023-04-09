@@ -2,15 +2,15 @@ import socket
 from json import load
 import os
 from pathlib import Path
+import re
+import time
 
 import face_recognition.categorize as categorize
 import server_receive.decrypt as decrypt
-import server_receive.logupdate as logupdate
 
 import constants
-import fileManagement
+import filemanagement
 
-import pprint  # for debugging
 
 if __name__ == "__main__":
     config = load(open(constants.CONNECT_SETTINGS_PATH))
@@ -34,8 +34,6 @@ if __name__ == "__main__":
         filename = os.path.basename(filename)
         filesize = int(filesize)
 
-        print(filename)
-        
         with open(filename, "wb") as f:
             while True:
                 bytes_read = client_socket.recv(constants.BUFFER_SIZE)
@@ -53,23 +51,41 @@ if __name__ == "__main__":
                 .get("result")[0]
                 .get("subjects")[0]
             )
-            
+
             if recognize_dict.get("similarity") < 0.7:
                 local_time = time.ctime(int(filename.split(".")[0]))
-                time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[:-1]
+                time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[
+                    :-1
+                ]
                 date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
-                
+
                 # NOTE: This is where logo detection should go
-                '''
-                fileManagement.add_image_to_database()
-                filemanagement.add_metadata_to_database()
-                '''
-                
+                print(filename.split(".")[0])
+                filemanagement.add_image_to_database(filename.split(".")[0])
+                filemanagement.add_metadata_to_database(
+                    filename.split(".")[0],
+                    date_to_store,
+                    time_to_store,
+                    "Compreface ID",
+                    "Unknown",
+                    "1",
+                )
+
             else:
                 local_time = time.ctime(int(filename.split(".")[0]))
-                time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[:-1]
+                time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[
+                    :-1
+                ]
                 date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
-                '''
-                fileManagement.add_image_to_database(filename)
-                fileManagement.add_metadata_to_database(filename)
-                '''
+
+                filemanagement.add_image_to_database(filename.split(".")[0])
+                filemanagement.add_metadata_to_database(
+                    filename.split(".")[0],
+                    date_to_store,
+                    time_to_store,
+                    "Compreface ID",
+                    recognize_dict.get("subject"),
+                    recognize_dict.get("similarity"),
+                )
+
+            filemanagement.removeTempImage(filename.split(".")[0] + ".png")

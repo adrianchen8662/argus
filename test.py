@@ -26,9 +26,14 @@ cv2.imwrite("cv2_redis.png", decoded)
 
 """
 redis cli commands that are helpful
-redis-cli --scan --pattern "*"
-redis-cli get <KEY>
+redis-cli -n <DB NUMBER> --scan --pattern "*"
+redis-cli -n <DB NUMBER> get <KEY>
 redis-cli FLUSHDB
+
+SELECT 1
+keys *
+
+for in order keys: redis-cli -n 1 --scan --pattern "*" | sort
 """
 
 """
