@@ -8,6 +8,7 @@ import server_receive.decrypt as decrypt
 import server_receive.logupdate as logupdate
 
 import constants
+import fileManagement
 
 import pprint  # for debugging
 
@@ -33,7 +34,9 @@ if __name__ == "__main__":
         filename = os.path.basename(filename)
         filesize = int(filesize)
 
-        with open(constants.DATA_STORAGE_FOLDER_PATH + filename, "wb") as f:
+        print(filename)
+        
+        with open(filename, "wb") as f:
             while True:
                 bytes_read = client_socket.recv(constants.BUFFER_SIZE)
                 if not bytes_read:
@@ -41,26 +44,32 @@ if __name__ == "__main__":
                 f.write(bytes_read)
 
         decrypt.decode(
-            constants.DATA_STORAGE_FOLDER_PATH + filename,
-            constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg",
+            filename,
+            filename.split(".")[0] + ".png",
         )
-        if Path(
-            constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg"
-        ).exists():
+        if Path(filename.split(".")[0] + ".png").exists():
             recognize_dict = (
-                categorize.recognizeFace(
-                    constants.DATA_STORAGE_FOLDER_PATH + filename.split(".")[0] + ".jpg"
-                )
+                categorize.recognizeFace(filename.split(".")[0] + ".png")
                 .get("result")[0]
                 .get("subjects")[0]
             )
-            # TODO: needs if no face was detected
+            
             if recognize_dict.get("similarity") < 0.7:
-                logupdate.updateLogs(filename, "Received", "Unknown", 0)
+                local_time = time.ctime(int(filename.split(".")[0]))
+                time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[:-1]
+                date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
+                
+                # NOTE: This is where logo detection should go
+                '''
+                fileManagement.add_image_to_database()
+                filemanagement.add_metadata_to_database()
+                '''
+                
             else:
-                logupdate.updateLogs(
-                    filename,
-                    "Received",
-                    recognize_dict.get("subject"),
-                    recognize_dict.get("similarity"),
-                )
+                local_time = time.ctime(int(filename.split(".")[0]))
+                time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[:-1]
+                date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
+                '''
+                fileManagement.add_image_to_database(filename)
+                fileManagement.add_metadata_to_database(filename)
+                '''
