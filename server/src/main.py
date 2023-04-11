@@ -5,8 +5,8 @@ from pathlib import Path
 import re
 import time
 
-import face_recognition.categorize as categorize
-import server_receive.decrypt as decrypt
+import categorize
+import decrypt
 
 import constants
 import filemanagement
@@ -52,15 +52,13 @@ if __name__ == "__main__":
                 .get("subjects")[0]
             )
 
-            if recognize_dict.get("similarity") < 0.7:
-                local_time = time.ctime(int(filename.split(".")[0]))
-                time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[
-                    :-1
-                ]
-                date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
+            local_time = time.ctime(int(filename.split(".")[0]))
+            time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[:-1]
+            date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
 
+            # if not enough confidence for a face is found
+            if recognize_dict.get("similarity") < 0.7:
                 # NOTE: This is where logo detection should go
-                print(filename.split(".")[0])
                 filemanagement.add_image_to_database(filename.split(".")[0])
                 filemanagement.add_metadata_to_database(
                     filename.split(".")[0],
@@ -71,13 +69,8 @@ if __name__ == "__main__":
                     "1",
                 )
 
+            # if enough confidence for a face is
             else:
-                local_time = time.ctime(int(filename.split(".")[0]))
-                time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[
-                    :-1
-                ]
-                date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
-
                 filemanagement.add_image_to_database(filename.split(".")[0])
                 filemanagement.add_metadata_to_database(
                     filename.split(".")[0],
