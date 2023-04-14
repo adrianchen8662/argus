@@ -95,7 +95,7 @@ def detection():
             encoded_file_name = str(int(time())) + ".enc"
             encoded_file_path = join(constants.LOG_PATH, encoded_file_name)
             cv2.imwrite(file_path, save_frame)
-            
+
             # encrypt file
             encrypt.encode(file_path, encoded_file_path)
 
@@ -106,7 +106,7 @@ def detection():
             else:
                 logupdate.updateLogs(file_name, "Not Sent")
                 logupdate.updateStatus("False")
-            
+
         # Display the resulting frame
         cv2.imshow("Video", frame)
 

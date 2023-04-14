@@ -16,9 +16,12 @@ def getLogs():
         list_of_dict = list(dict_reader)
         return list_of_dict
 
-'''
+
+"""
 Returns a list of either 0 or 1, 0 for not sent, 1 for sent
-'''
+"""
+
+
 def getLogSimple():
     with open(constants.LOG_FILE_PATH, mode="r") as f:
         file = csv.DictReader(f)
@@ -29,7 +32,7 @@ def getLogSimple():
             else:
                 status.append("1")
     return status[-20:]
-        
+
 
 def updateStatus(update_status):
     with open(constants.CONNECT_SETTINGS_PATH, "r") as jsonFile:
@@ -71,6 +74,7 @@ def createLogs():
             )
             storage_info_writer.writerow(["Filename", "Date", "Time", "Status"])
 
+
 def editConnectSettings(address, port, password):
     with open(constants.CONNECT_SETTINGS_PATH, "r") as jsonFile:
         data = load(jsonFile)
@@ -79,6 +83,7 @@ def editConnectSettings(address, port, password):
         data["Connection Settings"][2]["AES Encryption Password"] = password
     with open(constants.CONNECT_SETTINGS_PATH, "w") as jsonFile:
         dump(data, jsonFile, indent=4)
+
 
 # TODO: check if this works correctly
 def sendBuffer():
