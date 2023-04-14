@@ -38,7 +38,8 @@ def updateStatus(update_status):
             data["Connection Settings"][3]["Connection Status"] == "False"
             and update_status == "True"
         ):
-            sendBuffer()
+            pass
+            # sendBuffer()
         data["Connection Settings"][3]["Connection Status"] = update_status
         print(data)
     with open(constants.CONNECT_SETTINGS_PATH, "w") as jsonFile:
@@ -70,6 +71,14 @@ def createLogs():
             )
             storage_info_writer.writerow(["Filename", "Date", "Time", "Status"])
 
+def editConnectSettings(address, port, password):
+    with open(constants.CONNECT_SETTINGS_PATH, "r") as jsonFile:
+        data = load(jsonFile)
+        data["Connection Settings"][0]["Address/Domain"] = address
+        data["Connection Settings"][1]["Port"] = port
+        data["Connection Settings"][2]["AES Encryption Password"] = password
+    with open(constants.CONNECT_SETTINGS_PATH, "w") as jsonFile:
+        dump(data, jsonFile, indent=4)
 
 # TODO: check if this works correctly
 def sendBuffer():
