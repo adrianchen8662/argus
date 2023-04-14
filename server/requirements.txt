@@ -1,0 +1,6 @@
+compreface-sdk
+numpy
+opencv-python
+pycryptodome
+redis
+docker

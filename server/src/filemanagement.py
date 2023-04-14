@@ -8,6 +8,7 @@ import constants
 
 # change to saving to docker volume
 
+
 def add_image_to_database(filename):
     config = load(open(constants.REDIS_SETTINGS_PATH))
     address = config["Connection Settings"][0]["Host"]
