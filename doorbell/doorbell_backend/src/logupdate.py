@@ -18,11 +18,9 @@ def getLogs():
 
 
 """
-Returns a list of either 0 or 1, 0 for not sent, 1 for sent
+Returns zero or 1 for last sent file making it or not
 """
-
-
-def getLogSimple():
+def getStatus():
     with open(constants.LOG_FILE_PATH, mode="r") as f:
         file = csv.DictReader(f)
         status = []
@@ -31,7 +29,7 @@ def getLogSimple():
                 status.append("0")
             else:
                 status.append("1")
-    return status[-20:]
+    return status[-1:]
 
 
 def updateStatus(update_status):

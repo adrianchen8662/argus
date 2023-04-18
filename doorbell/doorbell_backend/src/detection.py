@@ -89,7 +89,6 @@ def detection():
         if weights > 5 and time() > send_delay and w > 100 and h > 100:
             send_delay = time()
             send_delay += 10
-            # possibly send two different images. One with just the face, and one the entire frame with or without the bounding box
             file_name = str(int(time())) + ".jpg"
             file_path = join(constants.LOG_PATH, file_name)
             encoded_file_name = str(int(time())) + ".enc"

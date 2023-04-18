@@ -1,13 +1,13 @@
 {
     "Connection Settings": [
         {
-            "Address/Domain": "0"
+            "Address/Domain": "1"
         },
         {
-            "Port": "0"
+            "Port": "2"
         },
         {
-            "AES Encryption Password": "0"
+            "AES Encryption Password": "3"
         },
         {
             "Connection Status": "True"

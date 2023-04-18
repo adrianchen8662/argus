@@ -1,12 +1,15 @@
 from flask import Flask, request, Response, jsonify
 from flask_restful import Resource, Api, reqparse
+from flask_cors import CORS
 import json
 
 import logupdate
 import constants
 
 app = Flask(__name__)
+CORS(app)
 
+# TODO: fix cors issue
 
 class StatusLogs(Resource):
     def get(self):
@@ -16,7 +19,7 @@ class StatusLogs(Resource):
 
 class Status(Resource):
     def get(self):
-        listout = logupdate.getLogSimple()
+        listout = logupdate.getStatus()
         return listout, 200
 
 

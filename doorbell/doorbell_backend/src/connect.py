@@ -14,11 +14,9 @@ def sendFrame(file_to_send, file_name):
         return False
     file_size = getsize(file_to_send)
     config = load(open(constants.CONNECT_SETTINGS_PATH))
+    # TODO: error checking on config file here on whether or not it's a real domain and port
     address = config["Connection Settings"][0]["Address/Domain"]
-    try:
-        port_number = int(config["Connection Settings"][1]["Port"])
-    except:
-        print("No port number found, using standard port 5001")
+    port_number = int(config["Connection Settings"][1]["Port"])
 
     if match(
         constants.IPV4_ADDRESS_REGEX,
