@@ -113,24 +113,30 @@ class getMetadata(Resource):  # /getmetadata?timestamp=<timestamp>
 class postImage(Resource):  # /postimage
     def post(self):
         file = request.files["image"]
-        if file and (file.filename).endswith(".jpg"):
+        if file and (file.filename).endswith(".enc"):
             file_bytes = file.read()
             with open(constants.DATA_STORAGE_FOLDER_PATH + (file.filename), "wb") as f:
                 f.write(file_bytes)
-            """
+
             decrypt.decode(
-                filename,
-                filename.split(".")[0] + ".jpg",
+                constants.DATA_STORAGE_FOLDER_PATH + (file.filename),
+                constants.DATA_STORAGE_FOLDER_PATH
+                + (file.filename).split(".")[0]
+                + ".jpg",
             )
-            """
-            local_time = time.ctime(int((file.filename).split(".")[0]))
+
+            local_time = time.ctime(
+                int(((file.filename).split(".")[0] + ".jpg").split(".")[0])
+            )
             time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[:-1]
             date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
 
             # BUG: won't work if there are no faces in the compreface database
             recognize_dict = (
                 categorize.recognizeFace(
-                    constants.DATA_STORAGE_FOLDER_PATH + file.filename
+                    constants.DATA_STORAGE_FOLDER_PATH
+                    + (file.filename).split(".")[0]
+                    + ".jpg"
                 )
                 .get("result")[0]
                 .get("subjects")[0]
@@ -149,7 +155,8 @@ class postImage(Resource):  # /postimage
                 )
             else:
                 compreface_output = categorize.addToFaceCollection(
-                    constants.DATA_STORAGE_FOLDER_PATH + (file.filename),
+                    constants.DATA_STORAGE_FOLDER_PATH
+                    + ((file.filename).split(".")[0] + ".jpg"),
                     recognize_dict.get("subject"),
                 )
                 filemanagement.add_metadata_to_database(

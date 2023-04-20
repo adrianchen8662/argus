@@ -69,8 +69,3 @@ def get_compreface_uuid_from_database(filename):
         0
     ]
     return compreface_uuid
-
-
-def removeTempImage(filename):
-    os.remove(filename)
-    return
