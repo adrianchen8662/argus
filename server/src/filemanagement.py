@@ -2,32 +2,25 @@ import redis
 import cv2  # might need apt-get install libgl1
 import numpy as np
 import os
-from json import load
+import json
 
 import constants
 
-# change to saving to docker volume
+"""
+redis cli commands that are helpful
+redis-cli --scan --pattern "*"
+redis-cli get <KEY>
+redis-cli FLUSHDB
+"""
 
 
-def add_image_to_database(filename):
-    config = load(open(constants.REDIS_SETTINGS_PATH))
+def add_metadata_to_database(
+    filename, date, time, status, compreface_id, identification, confidence
+):
+    config = json.load(open(constants.REDIS_SETTINGS_PATH))
     address = config["Connection Settings"][0]["Host"]
     port = int(config["Connection Settings"][1]["Port"])
-    redis_images = redis.StrictRedis(host=address, port=port, db=0)
-
-    img1 = cv2.imread(filename + ".png", 1)
-    retval, buffer = cv2.imencode(".png", img1)
-
-    image_bytes = np.array(buffer).tobytes()
-
-    redis_images.set(filename, image_bytes)
-
-
-def add_metadata_to_database(filename, date, time, status, identification, confidence):
-    config = load(open(constants.REDIS_SETTINGS_PATH))
-    address = config["Connection Settings"][0]["Host"]
-    port = int(config["Connection Settings"][1]["Port"])
-    redis_metadata = redis.StrictRedis(host=address, port=port, db=1)
+    redis_metadata = redis.StrictRedis(host=address, port=port, db=0)
 
     # metadata stored in the python dictionary format
     metadata = (
@@ -39,6 +32,8 @@ def add_metadata_to_database(filename, date, time, status, identification, confi
         + str(time)
         + ", Status: "
         + str(status)
+        + ", Compreface ID: "
+        + str(compreface_id)
         + ", Identification: "
         + str(identification)
         + ", Confidence: "
@@ -50,12 +45,28 @@ def add_metadata_to_database(filename, date, time, status, identification, confi
 
 
 def get_metadata_from_database(filename):
-    config = load(open(constants.CONNECT_SETTINGS_PATH))
+    config = json.load(open(constants.REDIS_SETTINGS_PATH))
     address = config["Connection Settings"][0]["Host"]
     port = int(config["Connection Settings"][1]["Port"])
-    redis_metadata = redis.StrictRedis(host=address, port=port, db=1)
+    redis_metadata = redis.StrictRedis(host=address, port=port, db=0)
     metadata = redis_metadata.get(filename)
+    if metadata == None:
+        return None
+    metadata = metadata.decode()
     return metadata
+
+
+def get_compreface_uuid_from_database(filename):
+    config = json.load(open(constants.REDIS_SETTINGS_PATH))
+    address = config["Connection Settings"][0]["Host"]
+    port = int(config["Connection Settings"][1]["Port"])
+    redis_metadata = redis.StrictRedis(host=address, port=port, db=0)
+    metadata = redis_metadata.get(filename)
+    if metadata == None:
+        return None
+    metadata = metadata.decode()
+    compreface_uuid = (metadata.split("Compreface ID: ")[1]).split(", Identification")[0]
+    return compreface_uuid
 
 
 def removeTempImage(filename):

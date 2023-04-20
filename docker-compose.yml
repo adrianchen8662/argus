@@ -81,31 +81,9 @@ services:
 
   cache:
     image: 	redis/redis-stack:latest
-    container_name: "Argus_Database"
+    container_name: "argus_database"
     restart: always
     ports:
       - "6379:6379"
-    volumes: 
-      - server-image-data:/var/lib/imagedatabase
-
-  react-frontend-build:
-    container_name: "Argus-Frontend"
-    build: ./website
-    ports:
-      - "3000:3000"
-    depends_on:
-       - cache
-       - server-backend-build
-    volumes: 
-      - server-image-data:/var/lib/imagedatabase
-  
-  server-backend-build:
-    container_name: "Argus-Backend"
-    build: ./server
-    ports:
-      - "5001:5001"
-    depends_on:
-      - cache
-      - compreface-api
     volumes: 
       - server-image-data:/var/lib/imagedatabase
