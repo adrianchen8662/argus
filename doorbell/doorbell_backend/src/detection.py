@@ -6,7 +6,7 @@ from os.path import join
 import constants
 
 import connect
-import logupdate
+import filemanagement
 import encrypt
 
 
@@ -100,11 +100,11 @@ def detection():
 
             # send file
             if connect.sendFrame(encoded_file_path, encoded_file_name) == True:
-                logupdate.updateLogs(file_name, "Sent")
-                logupdate.updateStatus("True")
+                filemanagement.updateLogs(file_name, "Sent")
+                filemanagement.updateStatus("True")
             else:
-                logupdate.updateLogs(file_name, "Not Sent")
-                logupdate.updateStatus("False")
+                filemanagement.updateLogs(file_name, "Not Sent")
+                filemanagement.updateStatus("False")
 
         # Display the resulting frame
         cv2.imshow("Video", frame)

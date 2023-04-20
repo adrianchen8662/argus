@@ -1,13 +1,13 @@
 {
     "Connection Settings": [
         {
-            "Address/Domain": "1"
+            "Address/Domain": "localhost"
         },
         {
-            "Port": "2"
+            "Port": "5000"
         },
         {
-            "AES Encryption Password": "3"
+            "AES Encryption Password": "ThisIsAVerySecurePassword"
         },
         {
             "Connection Status": "True"

@@ -20,6 +20,8 @@ def getLogs():
 """
 Returns zero or 1 for last sent file making it or not
 """
+
+
 def getStatus():
     with open(constants.LOG_FILE_PATH, mode="r") as f:
         file = csv.DictReader(f)
@@ -42,7 +44,6 @@ def updateStatus(update_status):
             pass
             # sendBuffer()
         data["Connection Settings"][3]["Connection Status"] = update_status
-        print(data)
     with open(constants.CONNECT_SETTINGS_PATH, "w") as jsonFile:
         dump(data, jsonFile, indent=4)
 
