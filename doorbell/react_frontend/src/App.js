@@ -1,5 +1,6 @@
 import "./App.css";
 import { useState } from "react";
+import Header from "./Header";
 
 function App() {
   const [address, setAddress] = useState("");
@@ -10,7 +11,7 @@ function App() {
   let handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await fetch("http://localhost:5000/jsonexample", {
+      let res = await fetch("http://127.0.0.1:5000/jsonexample", {
         method: "POST",
         body: JSON.stringify({
           address: address,
@@ -30,32 +31,44 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={address}
-          placeholder="Address/Domain"
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <input
-          type="text"
-          value={port}
-          placeholder="Port"
-          onChange={(e) => setPort(e.target.value)}
-        />
-        <input
-          type="text"
-          value={password}
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <button type="submit">Create</button>
-
-        <div className="message">{message ? <p>{message}</p> : null}</div>
-      </form>
-    </div>
+    <>
+      <Header />
+      <div id="setupFormContainer">
+        <form onSubmit={handleSubmit}>
+          <div className="formOptionContainer">
+            <span className="formOptionLabel">Address</span>
+            <input
+              type="text"
+              value={address}
+              placeholder="127.0.0.0"
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </div>
+          <div className="formOptionContainer">
+            <span className="formOptionLabel">Port</span>
+            <input
+            type="text"
+            value={port}
+            placeholder="3000"
+            onChange={(e) => setPort(e.target.value)}
+            required
+          />
+          </div>
+          <div className="formOptionContainer">
+            <span className="formOptionLabel">Password</span>
+            <input
+              type="password"
+              value={password}
+              placeholder="••••••••"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button type="submit">C R E A T E</button>
+        </form>
+      </div>
+      <div className={`${message ? "message" : "no_message"}`} >{message ? <p>{message}</p> : null}</div>
+    </>
   );
 }
 
