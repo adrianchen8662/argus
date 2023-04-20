@@ -174,17 +174,17 @@ api.add_resource(
     assignFamilyToImage, "/assignfamilytoimage", endpoint="assignFamilyToImage"
 )
 # BUG: This does not work. The compreface uuid in filemanagement does not work
-'''
+"""
 api.add_resource(
     removeFamilyInImage, "/removefamilyinimage", endpoint="removeFamilyInImage"
 )
-'''
-# BUG: Same issue as above. 
-'''
+"""
+# BUG: Same issue as above.
+"""
 api.add_resource(
     changeFamilyInImage, "/changefamilyinimage", endpoint="changeFamilyInImage"
 )
-'''
+"""
 api.add_resource(
     postNewFamilyMember, "/postnewfamilymember", endpoint="postNewFamilyMember"
 )

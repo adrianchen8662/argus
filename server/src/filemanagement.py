@@ -65,7 +65,9 @@ def get_compreface_uuid_from_database(filename):
     if metadata == None:
         return None
     metadata = metadata.decode()
-    compreface_uuid = (metadata.split("Compreface ID: ")[1]).split(", Identification")[0]
+    compreface_uuid = (metadata.split("Compreface ID: ")[1]).split(", Identification")[
+        0
+    ]
     return compreface_uuid
 
 
