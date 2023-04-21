@@ -8,13 +8,14 @@ import constants
 
 """
 redis cli commands that are helpful
+
 redis-cli --scan --pattern "*"
 redis-cli get <KEY>
 redis-cli FLUSHDB
 """
 
 
-def add_metadata_to_database(
+def addMetadataToDatabase(
     filename, date, time, status, compreface_id, identification, confidence
 ):
     config = json.load(open(constants.REDIS_SETTINGS_PATH))
@@ -44,7 +45,7 @@ def add_metadata_to_database(
     redis_metadata.set(filename, metadata)
 
 
-def get_metadata_from_database(filename):
+def getMetadataFromDatabase(filename):
     config = json.load(open(constants.REDIS_SETTINGS_PATH))
     address = config["Connection Settings"][0]["Host"]
     port = int(config["Connection Settings"][1]["Port"])
@@ -56,7 +57,7 @@ def get_metadata_from_database(filename):
     return metadata
 
 
-def get_compreface_uuid_from_database(filename):
+def getComprefaceUuidFromDatabase(filename):
     config = json.load(open(constants.REDIS_SETTINGS_PATH))
     address = config["Connection Settings"][0]["Host"]
     port = int(config["Connection Settings"][1]["Port"])

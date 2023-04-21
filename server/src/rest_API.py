@@ -1,9 +1,8 @@
-from flask import Flask, request, Response, jsonify
-from flask_restful import Resource, Api, reqparse
+from flask import Flask, request
+from flask_restful import Resource, Api
 from flask_cors import CORS
 import time
 import re
-import json
 
 import constants
 import filemanagement
@@ -12,8 +11,6 @@ import categorize
 
 app = Flask(__name__)
 CORS(app)
-
-# TODO: fix cors issue
 
 app = Flask(__name__)
 api = Api(app)
@@ -48,7 +45,7 @@ class assignFamilyToImage(
 class removeFamilyInImage(Resource):
     def post(self):
         timestamp = (request.args).get("timestamp")
-        compreface_uuid = filemanagement.get_compreface_uuid_from_database(timestamp)
+        compreface_uuid = filemanagement.getComprefaceUuidFromDatabase(timestamp)
         print(compreface_uuid)
         test = str(categorize.deleteImage(compreface_uuid))
         print(test)
@@ -103,7 +100,7 @@ class postRemoveDetected(Resource):  # /removedetected?timestamp=<timestamp>
 class getMetadata(Resource):  # /getmetadata?timestamp=<timestamp>
     def get(self):
         timestamp = (request.args).get("timestamp")
-        metadata = filemanagement.get_metadata_from_database(timestamp)
+        metadata = filemanagement.getMetadataFromDatabase(timestamp)
         if metadata == None:
             return "Error: no entry with given timestamp found", 400
         return metadata, 200
@@ -159,7 +156,7 @@ class postImage(Resource):  # /postimage
                     + ((file.filename).split(".")[0] + ".jpg"),
                     recognize_dict.get("subject"),
                 )
-                filemanagement.add_metadata_to_database(
+                filemanagement.addMetadataToDatabase(
                     file.filename.split(".")[0],
                     date_to_store,
                     time_to_store,
