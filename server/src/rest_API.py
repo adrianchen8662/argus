@@ -35,7 +35,6 @@ class getStatus(Resource):  # /getstatus
             return_string += "Compreface: false, "
         else:
             return_string += "Compreface: true, "
-        print("Compreface tested")
         # Test Database connection
         try:
             filemanagement.testConnectionToDatabase()
@@ -43,19 +42,17 @@ class getStatus(Resource):  # /getstatus
             return_string += "Database: false, "
         else:
             return_string += "Database: true, "
-        print("Database tested")
         # Test Doorbell connection
         config = load(open(constants.CONNECT_SETTINGS_PATH))
         address = config["Connection Settings"][0]["Address/Domain"]
         port_number = config["Connection Settings"][1]["Port"]
         url = "http://" + address + ":" + port_number + "/testconnection"
         try:
-            requests.get(url, timeout=1)
+            requests.get(url, timeout=1) # timeout so no infinite loop
         except:
             return_string += "Doorbell: false}"
         else:
             return_string += "Doorbell: true}"
-        print("Doorbell tested")
         return return_string, 200
 
 
