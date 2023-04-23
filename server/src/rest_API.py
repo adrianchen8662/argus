@@ -3,6 +3,8 @@ from flask_restful import Resource, Api
 from flask_cors import CORS
 import time
 import re
+import requests
+from json import load
 
 import constants
 import filemanagement
@@ -17,7 +19,7 @@ api = Api(app)
 
 
 # returns the entire metadata log
-class getLogs(Resource):  # /getlogs
+class getStatusLogs(Resource):  # /getstatuslogs
     def get(self):
         return "ok"
 
@@ -25,7 +27,36 @@ class getLogs(Resource):  # /getlogs
 # gets the connection status of doorbell and server
 class getStatus(Resource):  # /getstatus
     def get(self):
-        return "ok"
+        # Test Compreface connection
+        return_string = "{"
+        try:
+            categorize.testConnectiontoCompreface()
+        except:
+            return_string += "Compreface: false, "
+        else:
+            return_string += "Compreface: true, "
+        print("Compreface tested")
+        # Test Database connection
+        try:
+            filemanagement.testConnectionToDatabase()
+        except:
+            return_string += "Database: false, "
+        else:
+            return_string += "Database: true, "
+        print("Database tested")
+        # Test Doorbell connection
+        config = load(open(constants.CONNECT_SETTINGS_PATH))
+        address = config["Connection Settings"][0]["Address/Domain"]
+        port_number = config["Connection Settings"][1]["Port"]
+        url = "http://" + address + ":" + port_number + "/testconnection"
+        try:
+            requests.get(url, timeout=1)
+        except:
+            return_string += "Doorbell: false}"
+        else:
+            return_string += "Doorbell: true}"
+        print("Doorbell tested")
+        return return_string, 200
 
 
 # BUG: allows for the same exact image to be posted onto a member. Not a critical bug, as it doesn't affect much, but might cause issues with storage
@@ -128,50 +159,55 @@ class postImage(Resource):  # /postimage
             time_to_store = re.search(constants.TIME_REGEX, local_time).group(0)[:-1]
             date_to_store = re.sub(constants.TIME_REGEX, "", local_time)
 
-            # BUG: won't work if there are no faces in the compreface database
-            recognize_dict = (
-                categorize.recognizeFace(
-                    constants.DATA_STORAGE_FOLDER_PATH
-                    + (file.filename).split(".")[0]
-                    + ".jpg"
+            try:
+                recognize_dict = (
+                    categorize.recognizeFace(
+                        constants.DATA_STORAGE_FOLDER_PATH
+                        + (file.filename).split(".")[0]
+                        + ".jpg"
+                    )
+                    .get("result")[0]
+                    .get("subjects")[0]
                 )
-                .get("result")[0]
-                .get("subjects")[0]
-            )
-
-            if recognize_dict.get("similarity") < 0.7:
+            except:
                 # NOTE: add logo detection here
-                filemanagement.add_metadata_to_database(
-                    file.filename.split(".")[0],
-                    date_to_store,
-                    time_to_store,
-                    "Compreface ID Not Found",
-                    "None",
-                    "Unknown",
-                    "1",
-                )
+                return "Ok", 200
             else:
-                compreface_output = categorize.addToFaceCollection(
-                    constants.DATA_STORAGE_FOLDER_PATH
-                    + ((file.filename).split(".")[0] + ".jpg"),
-                    recognize_dict.get("subject"),
-                )
-                filemanagement.addMetadataToDatabase(
-                    file.filename.split(".")[0],
-                    date_to_store,
-                    time_to_store,
-                    "Compreface ID Found",
-                    compreface_output.get("image_id"),
-                    recognize_dict.get("subject"),
-                    recognize_dict.get("similarity"),
-                )
+                if recognize_dict.get("similarity") < 0.7:
+                    # NOTE: add logo detection here
+                    filemanagement.addMetadataToDatabase(
+                        file.filename.split(".")[0],
+                        date_to_store,
+                        time_to_store,
+                        "Compreface ID Not Found",
+                        "None",
+                        "Unknown",
+                        "1",
+                    )
+                else:
+                    compreface_output = categorize.addToFaceCollection(
+                        constants.DATA_STORAGE_FOLDER_PATH
+                        + ((file.filename).split(".")[0] + ".jpg"),
+                        recognize_dict.get("subject"),
+                    )
+                    filemanagement.addMetadataToDatabase(
+                        file.filename.split(".")[0],
+                        date_to_store,
+                        time_to_store,
+                        "Compreface ID Found",
+                        compreface_output.get("image_id"),
+                        recognize_dict.get("subject"),
+                        recognize_dict.get("similarity"),
+                    )
 
-            return "Ok", 200
+                return "Ok", 200
         else:
             return "Error: unknown or missing file", 400
 
 
-api.add_resource(getLogs, "/getlogs", endpoint="getLogs")
+"""
+api.add_resource(getStatusLogs, "/getstatuslogs", endpoint="getStatusLogs")
+"""
 api.add_resource(getStatus, "/getstatus", endpoint="getStatus")
 
 api.add_resource(

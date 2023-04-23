@@ -15,6 +15,11 @@ redis-cli FLUSHDB
 """
 
 
+def testConnectionToDatabase():
+    r = redis.Redis("127.0.0.1", socket_connect_timeout=1)
+    r.ping()
+
+
 def addMetadataToDatabase(
     filename, date, time, status, compreface_id, identification, confidence
 ):
@@ -27,7 +32,7 @@ def addMetadataToDatabase(
     metadata = (
         "{Filename: "
         + str(filename)
-        + ", Data: "
+        + ", Date: "
         + str(date)
         + ", Time: "
         + str(time)
