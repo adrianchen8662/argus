@@ -48,7 +48,7 @@ class getStatus(Resource):  # /getstatus
         port_number = config["Connection Settings"][1]["Port"]
         url = "http://" + address + ":" + port_number + "/testconnection"
         try:
-            requests.get(url, timeout=1) # timeout so no infinite loop
+            requests.get(url, timeout=1)  # timeout so no infinite loop
         except:
             return_string += "Doorbell: false}"
         else:
