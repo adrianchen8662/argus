@@ -9,34 +9,40 @@ import constants
 app = Flask(__name__)
 CORS(app)
 
-# TODO: fix cors issue
 
-
-class StatusLogs(Resource):
+class getStatusLogs(Resource):
     def get(self):
         listout = filemanagement.getLogs()
         return listout, 200
 
 
-class Status(Resource):
+class testConnection(Resource):
+    def get(self):
+        return "Ok", 200
+
+
+class getStatus(Resource):
     def get(self):
         listout = filemanagement.getStatus()
         return listout, 200
 
 
-@app.route("/jsonexample", methods=["POST"])
-def jsonexample():
-    request_data = request.get_json(force=True)
-    print(request_data)
-    address = request_data.get("address")
-    port = request_data.get("port")
-    password = request_data.get("password")
-    filemanagement.editConnectSettings(address, port, password)
-    return "", 200
+class setConnectSettings(Resource):
+    def post(self):
+        address = (request.args).get("address")
+        port = (request.args).get("port")
+        password = (request.args).get("password")
+        filemanagement.editConnectSettings(address, port, password)
+        # todo: test connection
+        return "Ok", 200
 
 
 api = Api(app)
-api.add_resource(StatusLogs, "/statuslogs")
-api.add_resource(Status, "/status")
+api.add_resource(StatusLogs, "/getstatuslogs", endpoint="getStatusLogs")
+api.add_resource(Status, "/getstatus", endpoint="getStatus")
+api.add_resource(
+    setConnectSettings, "/setconnectsettings", endpoint="setConnectSettings"
+)
+api.add_resource(testConnection, "/testconnection", endpoint="testConnection")
 
 app.run()
