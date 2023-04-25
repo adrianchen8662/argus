@@ -31,7 +31,7 @@ class Header extends React.Component {
 
   async componentDidMount() {
     try {
-      const res = await fetch("http://localhost:5000/getStatus", {
+      const res = await fetch("http://localhost:5000/getstatus", {
         method: "GET",
         body: null,
       });
