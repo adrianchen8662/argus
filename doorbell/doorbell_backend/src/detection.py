@@ -6,13 +6,13 @@ from os.path import join
 import constants
 
 import connect
-import logupdate
+import filemanagement
 import encrypt
 
 
 def detection():
     face_cascade = cv2.CascadeClassifier(constants.FACE_REG_DATA_PATH)
-
+    print("Video Capture Starting")
     video_capture = cv2.VideoCapture(0)
 
     send_delay = 0
@@ -89,7 +89,6 @@ def detection():
         if weights > 5 and time() > send_delay and w > 100 and h > 100:
             send_delay = time()
             send_delay += 10
-            # possibly send two different images. One with just the face, and one the entire frame with or without the bounding box
             file_name = str(int(time())) + ".jpg"
             file_path = join(constants.LOG_PATH, file_name)
             encoded_file_name = str(int(time())) + ".enc"
@@ -101,11 +100,11 @@ def detection():
 
             # send file
             if connect.sendFrame(encoded_file_path, encoded_file_name) == True:
-                logupdate.updateLogs(file_name, "Sent")
-                logupdate.updateStatus("True")
+                filemanagement.updateLogs(file_name, "Sent")
+                filemanagement.updateStatus("True")
             else:
-                logupdate.updateLogs(file_name, "Not Sent")
-                logupdate.updateStatus("False")
+                filemanagement.updateLogs(file_name, "Not Sent")
+                filemanagement.updateStatus("False")
 
         # Display the resulting frame
         cv2.imshow("Video", frame)
