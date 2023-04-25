@@ -6,11 +6,12 @@ import axios from 'axios';
 import Frame from "./frame/Frame";
 // import Timeline from "./timeline/Timeline";
 import { getCurrentEvent } from "../redux/selectors";
-import { frameDetails } from "../statics/testDetails"
+import { framesPath } from "../constants";
+import { frameDetails } from "../statics/testDetails";
 import { ReactComponent as Left } from "../statics/lArrow.svg";
 import { ReactComponent as Right } from "../statics/RArrow.svg";
 
-const allFrames = frameDetails.frames.map((frame) => <Frame type={frame.type} imgSrc={frame.img} imgId={frame.id}/>)
+const allFrames = frameDetails.frames.map((frame) => <Frame familyList={null} type={frame.type} imgSrc={frame.img} imgId={frame.id}/>)
 
 
 class FrameArea extends React.Component {
@@ -20,9 +21,39 @@ class FrameArea extends React.Component {
     this.handleMoveLeft = this.handleMoveLeft.bind(this);
     this.state = {
       currentEvent: 0,
-      totalFrames: allFrames.length - 1
+      totalFrames: allFrames.length - 1,
+      familyList: null,
     };
   }
+
+  async componentDidMount() {
+    try {
+      const res = await fetch("http://localhost:5000/getfamilylist", {
+        method: "GET",
+        body: null,
+      });
+      if (res.status === 200) {
+        this.setState({
+          familyList: res
+        })
+      } else {
+        console.log("hello");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    frameDetails.frames.map(async (frame) => {
+      const res = await fetch(`http://localhost:5000/getmetadata?timestamp=${frame.img}`, {
+        method: "GET",
+        body: null,
+      });
+      if (res.status === 200) {
+        console.log("hello");
+      } else {
+        console.log("hello");
+      }
+    })
+  };
 
   handleMoveRight () {
     const { currentEvent } = this.state;
@@ -43,7 +74,7 @@ class FrameArea extends React.Component {
   }
 
   render() {
-    const { currentEvent, totalFrames } = this.state;
+    const { currentEvent, totalFrames, familyList } = this.state;
     const lArrowHide = currentEvent <= -totalFrames;
     const rArrowHide = currentEvent >= 0;
     return (

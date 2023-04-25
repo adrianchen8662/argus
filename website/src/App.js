@@ -11,7 +11,6 @@ import TimelineArea from "./timelineArea/TimelineArea";
 
 
 class App extends React.PureComponent {
- 
   render() {
     const { currentArea } = this.props;
 

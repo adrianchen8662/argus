@@ -5,6 +5,7 @@
     flex-direction: column;
     border-radius: 10px;
     overflow: hidden;
+    border: #fff 3px solid;
 }
 
 .timelineAlbumText {

@@ -10,20 +10,26 @@ class FamilyMemberFrames extends React.PureComponent {
   render() {
     const { memberId, backHandler } = this.props; 
     return (
-      <div className="memberFramesContainer">
+      <div className="memberFramesContainer movingIn">
         <div className="memberFramesHeader">
-          <div className="backButtonContainer" onClick={() => backHandler()}>
-            <Back id="backButton" />
+          <div className="backButtonContainer"  onClick={() => backHandler()}>
+            <div className="backButtonComponent">
+              <Back id="backButton" />
+            </div>
+            <span className="backButtonHelp">back</span>
           </div>
           <div className="memberHeaderName">
-            {memberId}: NAME
+            {memberId}NAME
           </div>
           <div className="memberHeaderDetails">
             <img className="memberImg headerImg" src="https://dummyimage.com/800x800/ffffff/000000" alt="profile img"/>
           </div>
         </div>
-        <div>
-          Frames Here
+        <div id="memberFramesComponent">
+          <span className="memberFrameHeading">Frames</span>
+          <div id="memberFramesScroller">
+            Frame
+          </div>
         </div>
       </div>
       );

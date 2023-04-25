@@ -14,6 +14,7 @@ export const Events = {
 export const FamilyAreaViews = {
   all_members: "ALL_MEMBERS",
   one_member: "ONE_MEMBER",
+  add_member: "ADD_MEMBER"
 }
 
 export const months = {
@@ -92,3 +93,8 @@ export const TIMELINE_VIEWS = {
   details_view: "DETAILS_VIEW",
   approvefamily_view: "APPROVE_VIEW",
 }
+
+export const hostPort = "http://localhost:5000/";
+
+
+export const framesPath = "/statics/testDetails"

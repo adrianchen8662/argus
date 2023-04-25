@@ -19,8 +19,6 @@ class TimelineArea extends React.Component {
       <div id="timelineArea" className="mainViewArea">
         <div id="timelinePhotosArea" className="movingIn">
           {allFrames}
-          {allFrames}
-          {allFrames}
         </div>
       </div>
       );
