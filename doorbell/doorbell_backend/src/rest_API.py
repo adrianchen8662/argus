@@ -9,6 +9,7 @@ import constants
 app = Flask(__name__)
 CORS(app)
 
+
 class getStatusLogs(Resource):
     def get(self):
         listout = filemanagement.getLogs()
