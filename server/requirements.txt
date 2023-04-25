@@ -1,0 +1,8 @@
+compreface-sdk
+numpy
+opencv-python
+pycryptodome
+redis
+flask
+flask_restful
+flask_cors

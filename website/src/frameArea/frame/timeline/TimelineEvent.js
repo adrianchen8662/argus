@@ -92,8 +92,6 @@ class TimelineEvent extends React.PureComponent {
           {eventType === "Family" && currentView === TIMELINE_VIEWS.basic_view &&
           <div className="timelineEventButtonContainer"> 
             {familyList.map((member) => (<div className="timelineFamilyM" onClick={this.handleAssignFamilyMember(`${member}`)}>{member}</div>))}
-            
-            
           </div>}
         </div>
       </div>

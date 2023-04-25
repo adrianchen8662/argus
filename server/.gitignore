@@ -1,2 +1,3 @@
-test/*
-*.credentials
+data_storage/
+__pycache__/
+*.jpg

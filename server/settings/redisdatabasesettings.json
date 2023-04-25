@@ -1,0 +1,10 @@
+{
+    "Connection Settings": [
+        {
+            "Host": "localhost"
+        },
+        {
+            "Port": "6379"
+        }
+    ]
+}
