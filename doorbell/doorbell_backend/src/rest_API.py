@@ -38,8 +38,8 @@ class setConnectSettings(Resource):
 
 
 api = Api(app)
-api.add_resource(StatusLogs, "/getstatuslogs", endpoint="getStatusLogs")
-api.add_resource(Status, "/getstatus", endpoint="getStatus")
+api.add_resource(getStatusLogs, "/getstatuslogs", endpoint="getStatusLogs")
+api.add_resource(getStatus, "/getstatus", endpoint="getStatus")
 api.add_resource(
     setConnectSettings, "/setconnectsettings", endpoint="setConnectSettings"
 )

@@ -4,6 +4,7 @@ from time import ctime
 from re import search, sub
 from os.path import isfile, join
 from json import load, dump
+import os
 
 import connect
 
@@ -17,11 +18,6 @@ def getLogs():
         return list_of_dict
 
 
-"""
-Returns zero or 1 for last sent file making it or not
-"""
-
-
 def getStatus():
     with open(constants.LOG_FILE_PATH, mode="r") as f:
         file = csv.DictReader(f)
@@ -32,6 +28,11 @@ def getStatus():
             else:
                 status.append("1")
     return status[-1:]
+
+
+def createDataStorageFolder():
+    if not os.path.exists(constants.LOG_PATH):
+        os.makedirs(constants.LOG_PATH)
 
 
 def updateStatus(update_status):

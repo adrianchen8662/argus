@@ -1,2 +1,5 @@
-opencv-python==4.7.0.72
-pycryptodome==3.17
+opencv-python
+pycryptodome
+flask
+flask_restful
+flask_cors
