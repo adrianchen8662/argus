@@ -23,7 +23,7 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    height: calc(100vh - 164px);
+    /* height: calc(100vh - 164px); */
     height: 60%;
 }
 
@@ -109,6 +109,36 @@ button:focus {
 
 .no_message {
     display: none;
+}
+
+.switchView {
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.switchViewSpan {
+    font-family: 'Unbounded';
+    font-size: 20px;
+    color: #fff;
+}
+
+.logs {
+    height: 90%;
+    border: #fff 3px solid;
+    width: 50%;
+}
+
+.logHeaderContainer {
+    width: 100%;
+    text-align: center;
+    background-color: #fff;
+}
+
+.logHeader {
+    font-family: 'Unbounded';
+    font-size: 40px;
+    color: #000;
 }
 
 @media (max-width: 1000px) {
