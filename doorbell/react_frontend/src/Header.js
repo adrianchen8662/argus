@@ -12,10 +12,28 @@ import { ReactComponent as ConnStatusBad } from "../src/ConnStatusBad.svg"
 class Header extends React.Component {
   constructor(props) {
     super(props);
-    this.connectionStatus = true;
+    this.state = {
+      connectionStatus: false,
+    }
+  }
+
+  async componentDidMount() {
+    try {
+      let res = await fetch("http://127.0.0.1:5000/getstatus", {
+        method: "GET",
+      });
+      if (res.status === 200) {
+        this.setState({connectionStatus: true});
+      } else {
+        this.setState({connectionStatus: false});
+      }
+    } catch (err) {
+      this.setState({connectionStatus: false});
+    }
   }
 
   render() {
+    const { connectionStatus } = this.state;
     return (
       <>
         <div id="header">
@@ -23,8 +41,8 @@ class Header extends React.Component {
             <Logo id="logoImg" className="headerCurrentHeading"/>
           </div>
           <div id="connStatusContainer">
-            {this.connectionStatus ? <ConnStatusGood className="menuSVG good" /> : <ConnStatusBad className="menuSVG bad" />}
-            {this.connectionStatus ? (<span className="connStatusSpan good">Connected</span>) : (<span className="connStatusSpan bad">Not Connected</span>)}
+            {connectionStatus ? <ConnStatusGood className="menuSVG good" /> : <ConnStatusBad className="menuSVG bad" />}
+            {connectionStatus ? (<span className="connStatusSpan good">Connected</span>) : (<span className="connStatusSpan bad">Not Connected</span>)}
 
           </div>
         </div>
