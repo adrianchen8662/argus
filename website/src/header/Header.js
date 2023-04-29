@@ -47,9 +47,9 @@ class Header extends React.Component {
         if(resJSON){
           this.setState({connStatus: true});
           this.setState({
-            cfaceConn: resJSON.Compreface === "true",
-            dbaseConn: resJSON.Database  === "true",
-            dbellConn: resJSON.Doorbell === "true",
+            cfaceConn: resJSON.Compreface,
+            dbaseConn: resJSON.Database,
+            dbellConn: resJSON.Doorbell,
           })
         }
       
