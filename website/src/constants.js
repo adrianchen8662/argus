@@ -105,11 +105,6 @@ export const TIMELINE_VIEWS = {
   approvefamily_view: "APPROVE_VIEW",
 }
 
-export const hostPort = "http://localhost:5000/";
-
-
-export const framesPath = "/statics/testDetails"
-
 export const getFileNameFromTimestamp = (timestamp) => `${timestamp}.jpg`
 
 export const apiHost = "http://localhost:8010/proxy"

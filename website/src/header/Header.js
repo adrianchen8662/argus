@@ -13,7 +13,7 @@ import { ReactComponent as FamilyHead } from "../statics/familyhead.svg";
 import { ReactComponent as GoodStatus } from "../statics/goodconnstatus.svg";
 import { ReactComponent as BadStatus } from "../statics/badconnstatus.svg";
 
-import { Areas, apiHost, getConnVals } from "../constants";
+import { Areas, apiHost } from "../constants";
 
 
 
@@ -46,14 +46,11 @@ class Header extends React.Component {
       .then((resJSON) => {
         if(resJSON){
           this.setState({connStatus: true});
-          const connVals = getConnVals(resJSON)
           this.setState({
-            cfaceConn: connVals.Compreface,
-            dbaseConn: connVals.Database,
-            dbellConn: connVals.Doorbell,
+            cfaceConn: resJSON.Compreface === "true",
+            dbaseConn: resJSON.Database  === "true",
+            dbellConn: resJSON.Doorbell === "true",
           })
-          console.log(resJSON)
-          console.log(connVals)
         }
       
     });
@@ -90,8 +87,8 @@ class Header extends React.Component {
               <span className={`headerStatusSpan ${connStatus ? "good" : "bad"}`}>conn</span>
               <div className="headerStatusPtsContainer">
                 <span className={`headerStatusSpan2 ${cfaceConn ? "good" : "bad"}`}>•</span>
-                <span className={`headerStatusSpan2 ${dbaseConn ? "good" : "bad"}`}>•</span>
                 <span className={`headerStatusSpan2 ${dbellConn ? "good" : "bad"}`}>•</span>
+                <span className={`headerStatusSpan2 ${dbaseConn ? "good" : "bad"}`}>•</span>
               </div>
             </div>
             {(currentArea === Areas.frame_area || currentArea === Areas.setup_area)  && <Logo id="logoImg" className="headerCurrentHeading"/>}
