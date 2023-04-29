@@ -57,11 +57,10 @@ class SetupArea extends React.PureComponent {
       .then((resJSON) => {
         if(resJSON){
           // this.setState({connStatus: true});
-          const connVals = getConnVals(resJSON)
           this.setState({
-            cfaceConn: connVals.Compreface,
-            dbaseConn: connVals.Database,
-            dbellConn: connVals.Doorbell,
+            cfaceConn: resJSON.Compreface,
+            dbaseConn: resJSON.Database,
+            dbellConn: resJSON.Doorbell,
           })
           console.log(resJSON)
           console.log(connVals)
