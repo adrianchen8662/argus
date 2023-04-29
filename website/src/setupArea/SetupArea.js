@@ -4,7 +4,7 @@
 
 import "./SetupArea.css";
 import React from "react";
-import { Areas, apiHost, getConnVals } from "../constants";
+import { Areas, apiHost} from "../constants";
 
 
 
@@ -62,8 +62,7 @@ class SetupArea extends React.PureComponent {
             dbaseConn: resJSON.Database,
             dbellConn: resJSON.Doorbell,
           })
-          console.log(resJSON)
-          console.log(connVals)
+
         }
       
     });
