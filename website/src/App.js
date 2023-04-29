@@ -38,7 +38,7 @@ class App extends React.PureComponent {
         method: "GET",
       }).then((res) => res.json())
       .then((resJSON) => { 
-        that.setState({framesList: resJSON});
+        that.setState({framesList: resJSON.Logfile});
       });
     } catch (err) {
       console.log(err);

@@ -30,7 +30,7 @@ class TimelineArea extends React.Component {
       console.log("didUpdate", frameList);
       if(frameList) {
         this.setState({
-          allFrames: frameList.map((frame) =>  <TimelineFrame type={frame.status} imgSrc={frame.filename} imgId={frame.identification}/>),
+          allFrames: frameList.map((frame) =>  <TimelineFrame type={frame.Identification} imgSrc={frame.Filename} imgId={frame["Compreface ID"]}/>),
         });
       }
     }

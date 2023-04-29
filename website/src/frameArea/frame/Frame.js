@@ -24,8 +24,8 @@ class Frame extends React.Component {
         console.log("CalledMeta", resJSON);
         that.setState({
           frameConf: resJSON.confidence,
-          frameStatus: resJSON.status,
-          frameMemberID: resJSON.identification,
+          frameStatus: resJSON.Identification,
+          frameMemberID: resJSON["Compreface ID"],
         })
       });
     } catch (err) {
@@ -46,8 +46,8 @@ class Frame extends React.Component {
           console.log("CalledMeta", resJSON);
           that.setState({
             frameConf: resJSON.confidence,
-            frameStatus: resJSON.status,
-            frameMemberID: resJSON.identification,
+            frameStatus: resJSON.Identification,
+            frameMemberID: resJSON["Compreface ID"],
           })
         });
       } catch (err) {

@@ -71,7 +71,7 @@ initFrameArea() {
       console.log(familyList)
       if(frameList) {
         this.setState({
-          allFrames: frameList.map((frame) =>  <Frame familyList={familyList} imgSrc={frame.filename} />),
+          allFrames: frameList.map((frame) =>  <Frame familyList={familyList} imgSrc={frame.Filename} />),
           totalFrames: frameList.length - 1,
           currentEvent: frameList.length - 1,
         });
