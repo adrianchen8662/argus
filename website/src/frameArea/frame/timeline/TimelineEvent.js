@@ -2,11 +2,9 @@
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 import "./Timeline.css";
 import React from "react";
-import { calcDate, calcTime, TIMELINE_VIEWS } from "../../../constants";
+import { apiHost, calcDate, calcTime, TIMELINE_VIEWS } from "../../../constants";
 import {ReactComponent as AddtoFamily} from "../../../statics/addtofamily2.svg"
-import { familyDetails } from "../../../statics/testDetails";
 
-const family = familyDetails.family_members;
 
 class TimelineEvent extends React.PureComponent {
   constructor(props) {
@@ -15,23 +13,27 @@ class TimelineEvent extends React.PureComponent {
     this.handleSwitchToFtoA = this.handleSwitchToFtoA.bind(this);
     this.state = {
       currentView: TIMELINE_VIEWS.basic_view,
+      update: [],
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { timestamp } = this.props;
-    if (timestamp !== prevProps.timestamp) {
+    const { eventType, timestamp } = this.props;
+    const { update } = this.state;
+    if (eventType !== prevProps.eventType || timestamp !== prevProps.timestamp) {
       this.setState({
-        currentView: TIMELINE_VIEWS.basic_view
+        currentView: TIMELINE_VIEWS.basic_view,
+        update: [...update]
       });
     }
+
   }
 
   handleAssignFamilyMember = async (e, name) => {
     e.preventDefault();
     const { timestamp } = this.props;
-    const res = await fetch(`http://localhost:5000/assignfamilytoimage?timestamp=${timestamp}&member=${name}`, {
-      method: "GET",
+    const res = await fetch(`${apiHost}/assignfamilytoimage?timestamp=${timestamp}&member=${name}`, {
+      method: "POST",
       body: null,
     });
     if (res.status === 200) {
@@ -56,7 +58,7 @@ class TimelineEvent extends React.PureComponent {
 
   render() {
     const { currentView } = this.state;
-    const { eventType, timestamp, familyList } = this.props;
+    const { eventType, timestamp, familyList, memberName } = this.props;
     return (
       <div className="timelineEvent">
         {currentView === TIMELINE_VIEWS.basic_view &&<div className="frameTimelinePart timelineEventDetails timelineEventType">
@@ -79,8 +81,8 @@ class TimelineEvent extends React.PureComponent {
           <div className="timelineFamilyContainer"> 
             <span className="timelineEventFamilyTextHead">Add To Family?</span>
             <div className="timelineFamilyMList">
-              {family.map((familyMember) => (
-                <div className="timelineFamilyM">{familyMember.name}</div>
+              {familyList.map((familyMember) => (
+                <div className="timelineFamilyM" onClick={(e) => this.handleAssignFamilyMember(e, familyMember)}>{familyMember}</div>
                 ))
               }
             </div>
@@ -91,7 +93,7 @@ class TimelineEvent extends React.PureComponent {
           </div>}
           {eventType === "Family" && currentView === TIMELINE_VIEWS.basic_view &&
           <div className="timelineEventButtonContainer"> 
-            {familyList.map((member) => (<div className="timelineFamilyM" onClick={this.handleAssignFamilyMember(`${member}`)}>{member}</div>))}
+            <div className="timelineFamilyM">{memberName}</div>
           </div>}
         </div>
       </div>

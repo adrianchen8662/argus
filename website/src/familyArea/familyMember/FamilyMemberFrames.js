@@ -19,7 +19,7 @@ class FamilyMemberFrames extends React.PureComponent {
             <span className="backButtonHelp">back</span>
           </div>
           <div className="memberHeaderName">
-            {memberId}NAME
+            {memberId}
           </div>
           <div className="memberHeaderDetails">
             <img className="memberImg headerImg" src="https://dummyimage.com/800x800/ffffff/000000" alt="profile img"/>

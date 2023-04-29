@@ -6,12 +6,12 @@ import axios from 'axios';
 import Frame from "./frame/Frame";
 // import Timeline from "./timeline/Timeline";
 import { getCurrentEvent } from "../redux/selectors";
-import { framesPath } from "../constants";
 import { frameDetails } from "../statics/testDetails";
 import { ReactComponent as Left } from "../statics/lArrow.svg";
 import { ReactComponent as Right } from "../statics/RArrow.svg";
+import { getFileNameFromTimestamp } from "../constants";
 
-const allFrames = frameDetails.frames.map((frame) => <Frame familyList={null} type={frame.type} imgSrc={frame.img} imgId={frame.id}/>)
+
 
 
 class FrameArea extends React.Component {
@@ -21,43 +21,26 @@ class FrameArea extends React.Component {
     this.handleMoveLeft = this.handleMoveLeft.bind(this);
     this.state = {
       currentEvent: 0,
-      totalFrames: allFrames.length - 1,
-      familyList: null,
+      totalFrames: 0,
+      allFrames: null
     };
   }
 
-  async componentDidMount() {
-    try {
-      const res = await fetch("http://localhost:5000/getfamilylist", {
-        method: "GET",
-        body: null,
-      });
-      if (res.status === 200) {
-        this.setState({
-          familyList: res
-        })
-      } else {
-        console.log("hello");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-    frameDetails.frames.map(async (frame) => {
-      const res = await fetch(`http://localhost:5000/getmetadata?timestamp=${frame.img}`, {
-        method: "GET",
-        body: null,
-      });
-      if (res.status === 200) {
-        console.log("hello");
-      } else {
-        console.log("hello");
-      }
-    })
+  
+
+
+  componentDidMount() {
+    this.initFrameArea();
+
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    this.initFrameArea();
+  }
+
   handleMoveRight () {
-    const { currentEvent } = this.state;
-    if(currentEvent < 0) {
+    const { totalFrames, currentEvent } = this.state;
+    if(currentEvent <= totalFrames) {
       this.setState({
         currentEvent: currentEvent + 1
       })
@@ -65,22 +48,49 @@ class FrameArea extends React.Component {
   }
 
   handleMoveLeft () {
-    const { totalFrames, currentEvent } = this.state;
-    if(currentEvent > -totalFrames) {
+    const {  currentEvent } = this.state;
+    if(currentEvent >= 0) {
       this.setState({
         currentEvent: currentEvent - 1
       })
     }
   }
 
+  getFrame (event) {
+    console.log("CALLED", event);
+    const { allFrames } = this.state;
+    console.log(allFrames);
+    return allFrames[event];
+  }
+
+initFrameArea() {
+    const {allFrames} = this.state;
+    const {getFramesList, framesReady, familyList} = this.props;
+    let frameList = null;
+    if(!allFrames && framesReady) {
+      frameList = getFramesList();
+      console.log("didUpdate", frameList);
+      console.log(familyList)
+      if(frameList) {
+        this.setState({
+          allFrames: frameList.map((frame) =>  <Frame familyList={familyList} imgSrc={frame.filename} />),
+          totalFrames: frameList.length - 1,
+          currentEvent: frameList.length - 1,
+        });
+      }
+    }
+  }
+
+
   render() {
-    const { currentEvent, totalFrames, familyList } = this.state;
-    const lArrowHide = currentEvent <= -totalFrames;
-    const rArrowHide = currentEvent >= 0;
+    const { currentEvent, totalFrames, allFrames} = this.state;
+
+    const lArrowHide = currentEvent <= 0;
+    const rArrowHide = currentEvent >= totalFrames;
     return (
       <div id="frameArea" className="movingIn">
         <Left className={`slideArrow ${lArrowHide && "hideArrow"}`} onClick={this.handleMoveLeft}/>
-        {allFrames[-currentEvent]}
+        { allFrames !== null && this.getFrame(currentEvent) }
         <Right className={`slideArrow ${rArrowHide && "hideArrow"}`} onClick={this.handleMoveRight}/>
       </div>
     );

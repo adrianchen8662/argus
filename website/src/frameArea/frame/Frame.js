@@ -1,25 +1,72 @@
 import "./Frame.css";
 import React from "react";
 import TimelineEvent from "./timeline/TimelineEvent";
-import { getTimestampFromImgSrc } from "../../constants";
+import { getTimestampFromImgSrc, apiHost } from "../../constants";
 
 class Frame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      frameConf: -1,
+      frameStatus: null,
+      frameMemberID: null
     };
+  }
+
+  componentDidMount() {
+    const { imgSrc } = this.props;
+    const that = this;
+    try {
+      fetch(`${apiHost}/getmetadata?timestamp=${imgSrc}`, {
+        method: "GET",
+      }).then((res) => res.json())
+      .then((resJSON) => { 
+        console.log("CalledMeta", resJSON);
+        that.setState({
+          frameConf: resJSON.confidence,
+          frameStatus: resJSON.status,
+          frameMemberID: resJSON.identification,
+        })
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { imgSrc } = this.props;
+    
+    if(imgSrc !== prevProps.imgSrc){
+      const that = this;
+      try {
+        fetch(`${apiHost}/getmetadata?timestamp=${imgSrc}`, {
+          method: "GET",
+        }).then((res) => res.json())
+        .then((resJSON) => { 
+          console.log("CalledMeta", resJSON);
+          that.setState({
+            frameConf: resJSON.confidence,
+            frameStatus: resJSON.status,
+            frameMemberID: resJSON.identification,
+          })
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 
   
   render() {
     const images = require.context('../../../public/img/data_storage', true);
-    const { imgSrc, imgId, type, familyList } = this.props; 
+    const { imgSrc, familyList } = this.props; 
+    const { frameConf, frameStatus, frameMemberID } = this.state;
+    console.log("imgSrc", imgSrc)
     const img = images(`./${imgSrc}.jpg`);
     return (
-      <div className={`frame frame-${type}`} id={imgId}>
+      <div className={`frame frame-${frameStatus}`} id="12">
         <img src={`${img}`} alt="Test Frame" />
-        <TimelineEvent familyList={familyList} eventType={type} timestamp={getTimestampFromImgSrc(imgSrc)} />
+        <TimelineEvent memberName={frameMemberID} familyList={familyList} eventType={frameStatus} frameConf={frameConf} timestamp={getTimestampFromImgSrc(imgSrc)} />
       </div>
     );
   }

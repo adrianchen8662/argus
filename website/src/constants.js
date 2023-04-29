@@ -2,7 +2,7 @@ export const Areas = {
   frame_area: "FRAME_AREA",
   family_area: "FAMILY_AREA",
   timeline_area: "TIMELINE_AREA",
-  live_area: "LIVE_AREA",
+  error_area: "ERROR_AREA",
 }
 
 export const Events = {
@@ -73,18 +73,29 @@ export const calcTime = (timestamp) => {
 }
 
 export const getDateFromImgSrc = (imgSrc) => {
-  const timestamp = imgSrc.split('_')[0];
+  const timestamp = imgSrc;
   return calcDateNoDay(timestamp);
 }
 
 export const getTimeFromImgSrc = (imgSrc) => {
-  const timestamp = imgSrc.split('_')[0];
+  const timestamp = imgSrc;
   return calcTime(timestamp);
 }
 
 export const getTimestampFromImgSrc = (imgSrc) => {
-  const timestamp = imgSrc.split('_')[0];
+  const timestamp = imgSrc;
   return timestamp;
+}
+
+export const getConnVals = (connString) => {
+  const connArr = connString.split(',');
+  const connDict = {};
+  connArr.forEach((connStr) => {
+    const connStrArr = connStr.split(':');
+    const re = /{|}| /g;
+    connDict[connStrArr[0].replace(re, '')] = connStrArr[1].replace(re, '') === "true"
+  });
+  return connDict
 }
 
 export const TIMELINE_VIEWS = {
@@ -98,3 +109,7 @@ export const hostPort = "http://localhost:5000/";
 
 
 export const framesPath = "/statics/testDetails"
+
+export const getFileNameFromTimestamp = (timestamp) => `${timestamp}.jpg`
+
+export const apiHost = "http://localhost:8010/proxy"

@@ -1,19 +1,19 @@
 /* eslint react/destructuring-assignment: 0 */
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
+/* eslint jsx-a11y/click-events-have-key-events: 0 */
 import "./Header.css";
 import React from "react";
 import { connect } from "react-redux";
 import { ReactComponent as Family } from "../statics/People_new.svg";
 import { ReactComponent as Frame } from "../statics/Latest.svg";
-import { ReactComponent as Info } from "../statics/calendar_new.svg";
+import { ReactComponent as Info } from "../statics/calendar.svg";
 import { ReactComponent as Logo } from "../statics/logo.svg";
 import { ReactComponent as TimelineHead } from "../statics/timelinehead.svg";
-import { ReactComponent as LiveHead } from "../statics/livehead.svg";
 import { ReactComponent as FamilyHead } from "../statics/familyhead.svg";
 import { ReactComponent as GoodStatus } from "../statics/goodconnstatus.svg";
 import { ReactComponent as BadStatus } from "../statics/badconnstatus.svg";
 
-import { Areas } from "../constants";
+import { Areas, apiHost, getConnVals } from "../constants";
 
 
 
@@ -26,22 +26,40 @@ class Header extends React.Component {
     this.handleChangeToTimeline = this.handleChangeToTimeline.bind(this);
     this.state = {
       connStatus: false,
+      cfaceConn: false,
+      dbaseConn: false,
+      dbellConn: false
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     try {
-      const res = await fetch("http://localhost:5000/getstatus", {
-        method: "GET",
-        body: null,
-      });
-      if (res.status === 200) {
-        this.setState({connStatus: true});
-      } else {
-        this.setState({connStatus: true});
-      }
+      fetch(`${apiHost}/getstatus`, {
+        method: "GET"
+      }).then((res) => 
+      {
+        if(res.status === 200) {
+          return res.json();
+        }
+        return null;
+      })
+      .then((resJSON) => {
+        if(resJSON){
+          this.setState({connStatus: true});
+          const connVals = getConnVals(resJSON)
+          this.setState({
+            cfaceConn: connVals.Compreface,
+            dbaseConn: connVals.Database,
+            dbellConn: connVals.Doorbell,
+          })
+          console.log(resJSON)
+          console.log(connVals)
+        }
+      
+    });
     } catch (err) {
       console.log(err);
+      this.props.changeArea(Areas.setup_area)
     }
   };
 
@@ -54,7 +72,7 @@ class Header extends React.Component {
   }
 
   handleChangeToLive() {
-    this.props.changeArea(Areas.live_area);
+    this.props.changeArea(Areas.setup_area);
   }
 
   handleChangeToTimeline() {
@@ -62,15 +80,23 @@ class Header extends React.Component {
   }
 
   render() {
-    const { connStatus } = this.state;
+    const { connStatus, cfaceConn, dbaseConn, dbellConn } = this.state;
     const { currentArea } = this.props; 
     return (
         <div id="header">
           <div id="logoHeader">
-            {currentArea === Areas.frame_area && <Logo id="logoImg" className="headerCurrentHeading"/>}
-            {connStatus ? <GoodStatus className="headerStatus" /> : <BadStatus className="headerStatus" />}
+            <div className="headerStatusContainer" onClick={this.handleChangeToLive}>
+              {connStatus ? <GoodStatus className="headerStatus" /> : <BadStatus className="headerStatus" />}
+              <span className={`headerStatusSpan ${connStatus ? "good" : "bad"}`}>conn</span>
+              <div className="headerStatusPtsContainer">
+                <span className={`headerStatusSpan2 ${cfaceConn ? "good" : "bad"}`}>•</span>
+                <span className={`headerStatusSpan2 ${dbaseConn ? "good" : "bad"}`}>•</span>
+                <span className={`headerStatusSpan2 ${dbellConn ? "good" : "bad"}`}>•</span>
+              </div>
+            </div>
+            {(currentArea === Areas.frame_area || currentArea === Areas.setup_area)  && <Logo id="logoImg" className="headerCurrentHeading"/>}
             {currentArea === Areas.timeline_area && <TimelineHead className="headerCurrentHeading movingIn"/>}
-            {currentArea === Areas.live_area && <LiveHead className="headerCurrentHeading movingIn"/>}
+            {/* {currentArea === Areas.error_area && <SetupHead className="headerCurrentHeading movingIn"/>} */}
             {currentArea === Areas.family_area && <FamilyHead className="headerCurrentHeading movingIn"/>}
           </div>
           <div id="menuHeader">

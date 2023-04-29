@@ -6,21 +6,13 @@ import "./FamilyArea.css";
 import React from "react";
 import axios from 'axios';
 import FamilyMember from "./familyMember/FamilyMember"
-import { familyDetails } from "../statics/testDetails"
-import { FamilyAreaViews } from "../constants";
+import { FamilyAreaViews, apiHost } from "../constants";
 import FamilyMemberFrames from "./familyMember/FamilyMemberFrames";
 import { ReactComponent as Back } from "../statics/back.svg"
 
 
 class FamilyArea extends React.PureComponent {
-  listMembers = familyDetails.family_members.map((familyMember) => 
-    <FamilyMember 
-      familyMemberId={familyMember.id} 
-      imgSrc={familyMember.profile_photo} 
-      name={familyMember.name}
-      clickHandler={this.handleMemberClick.bind(this)}
-    />
-  )
+  
 
   constructor(props) {
     super(props);
@@ -30,16 +22,28 @@ class FamilyArea extends React.PureComponent {
 
     this.state = {
       currentFamilyView: FamilyAreaViews.all_members,
+      familyList: null,
       memberId: null,
       memberName: '',
       memberPhoto: null,
     }
   }
 
-  handleMemberClick(memberId) {
+
+  componentDidMount() {
+    this.initFamilyArea();
+  }
+
+  componentDidUpdate(){
+    this.initFamilyArea();
+  }
+
+  handleMemberClick(e, memberId) {
+    const {getFamilyList} = this.props;
+    const memberName = getFamilyList()[memberId];
     this.setState({
       currentFamilyView: FamilyAreaViews.one_member,
-      memberId,
+      memberId: memberName
     })
   }
 
@@ -66,33 +70,28 @@ class FamilyArea extends React.PureComponent {
   handleNewMember= async (event) => {
     const { memberName, memberPhoto } = this.state;
     event.preventDefault();
-
-    const formData = new FormData();
-    formData.append('memberName', memberName);
-    formData.append('memberPhoto', memberPhoto);
-
     try {
-      const response = await axios.post('test_host', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
+      fetch(`${apiHost}/postnewfamilymember?name=${memberName}`, {
+        method: "POST",
+      }).then((res) => console.log(res));
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  allMembers = () =>  (<>
-      {this.listMembers}
-      <FamilyMember 
-        familyMemberId="+"
-        clickHandler={this.handleAddClick.bind(this)}
-      />
-    </>)
+  allMembers = () =>  {
+    const {familyList} = this.state;
+
+    return (<>
+    {familyList}
+    <FamilyMember 
+      familyMemberId="+"
+      clickHandler={this.handleAddClick.bind(this)}
+    />
+    </>)}
 
   oneMember = () => {
-    const { memberId } = this.state;
+    const { memberId, familyList } = this.state;
     return (<FamilyMemberFrames memberId={memberId} backHandler={this.handleBackClick.bind(this)} />);
   }
 
@@ -107,25 +106,50 @@ class FamilyArea extends React.PureComponent {
           </div>
           <span className="backButtonHelp">back</span>
         </div>
-        {/* <span className="addNewMemberHead">New Family Member</span> */}
       </div>
       <form className="inputForm" onSubmit={this.handleNewMember.bind(this)}>
+      <span className="addNewMemberHead">New Family Member</span>
         <div className="inputContainer">
           <input name="memberName" className="inputName" type="text" placeholder="Name" onChange={this.handleInputChange}/>
         </div>
-        <div className="inputContainer">          
+        {/* <div className="inputContainer">          
           <label className="inputPhotoLabel" htmlFor="photo">
             <span className="inputHelp">Photo</span>
             <input name="memberPhoto" id="photo" className="inputIMG" type="file" placeholder="Argus" onChange={this.handleInputChange}/>
           </label>
-        </div>
+        </div> */}
         <button className="formSubmitButton inputHelp" type="submit">A D D</button>
       </form>
     </div> );
   }
 
+
+  initFamilyArea() {
+    const {getFamilyList, familyListReady} = this.props;
+    const {familyList} = this.state;
+    let currList = null
+    if(!familyList && familyListReady) {
+      currList = getFamilyList();
+      console.log("didUpdate", currList);
+      if(currList) {
+        this.setState({
+          familyList: currList.map((familyMember, i) => (
+          <FamilyMember 
+            key={familyMember}
+            familyMemberId={i} 
+            // imgSrc={familyMember.profile_photo} 
+            name={familyMember}
+            clickHandler={(e) => this.handleMemberClick.bind(this)(e, i)}
+          />)
+  )
+
+        });
+      }
+    }
+  }
+
   render() {
-    const { currentFamilyView, memberId } = this.state;
+    const { currentFamilyView } = this.state;
     return (
       <div id="familyArea" className="mainViewArea">
         <div id="familyMembersList" className="movingIn">
