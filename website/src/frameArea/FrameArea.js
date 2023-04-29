@@ -8,7 +8,6 @@ import Frame from "./frame/Frame";
 import { getCurrentEvent } from "../redux/selectors";
 import { ReactComponent as Left } from "../statics/lArrow.svg";
 import { ReactComponent as Right } from "../statics/RArrow.svg";
-import { getFileNameFromTimestamp } from "../constants";
 
 
 

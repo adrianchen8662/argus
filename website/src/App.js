@@ -65,7 +65,7 @@ class App extends React.PureComponent {
           {currentArea.currentArea === Areas.family_area  && <FamilyArea familyListReady={this.getFamilyList() !== null} getFamilyList={this.getFamilyList} />}
           {currentArea.currentArea === Areas.frame_area  && <FrameArea familyListReady={this.getFamilyList() !== null} familyList={this.getFamilyList()} framesReady={this.getFramesList() !== null} getFramesList={this.getFramesList} />}
           {currentArea.currentArea === Areas.setup_area && <SetupArea />}
-          {currentArea.currentArea === Areas.timeline_area && <TimelineArea />}
+          {currentArea.currentArea === Areas.timeline_area && <TimelineArea framesReady={this.getFramesList() !== null} getFramesList={this.getFramesList} />}
         </div>
       </>
     );
