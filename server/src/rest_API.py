@@ -14,14 +14,21 @@ import categorize
 app = Flask(__name__)
 CORS(app)
 
-app = Flask(__name__)
+# app = Flask(__name__)
 api = Api(app)
 
 
 # returns the entire metadata log
 class getStatusLogs(Resource):  # /getstatuslogs
     def get(self):
-        return "ok"
+        json_string = "{Logfile: ["
+        list_of_keys = list(filemanagement.getListOfKeysFromDatabase())
+        for i in range(len(list_of_keys)):
+            list_of_keys[i] = list_of_keys[i].decode("utf-8")
+        for key in list_of_keys:
+            json_string += filemanagement.getMetadataFromDatabase(key) + ", "
+        json_string += "]}"
+        return json_string, 200
 
 
 # gets the connection status of doorbell and server
@@ -43,7 +50,7 @@ class getStatus(Resource):  # /getstatus
         else:
             return_string += "Database: true, "
         # Test Doorbell connection
-        config = load(open(constants.CONNECT_SETTINGS_PATH))
+        config = load(open(constants.DOORBELL_SETTINGS_PATH))
         address = config["Connection Settings"][0]["Address/Domain"]
         port_number = config["Connection Settings"][1]["Port"]
         url = "http://" + address + ":" + port_number + "/testconnection"
@@ -202,9 +209,45 @@ class postImage(Resource):  # /postimage
             return "Error: unknown or missing file", 400
 
 
-"""
+class postDoorbellSettings(
+    Resource
+):  # /postdoorbellsettings?address=<address>&port=<port>&password=<password>
+    def post(self):
+        address = (request.args).get("address")
+        port = (request.args).get("port")
+        password = (request.args).get("password")
+
+        filemanagement.setDoorbellSettings(address, port, password)
+
+        return "Ok", 200
+
+
+class postDatabaseSettings(
+    Resource
+):  # /postdatabasesettings?address=<address>&port=<port>
+    def post(self):
+        address = (request.args).get("address")
+        port = (request.args).get("port")
+
+        filemanagement.setDatabaseSettings(address, port)
+
+        return "Ok", 200
+
+
+class postComprefaceSettings(
+    Resource
+):  # /postcomprefacesettings?address=<address>&port=<port>&api_key=<api_key>
+    def post(self):
+        address = (request.args).get("address")
+        port = (request.args).get("port")
+        api_key = (request.args).get("api_key")
+
+        filemanagement.setComprefaceSettings(address, port, api_key)
+
+        return "Ok", 200
+
+
 api.add_resource(getStatusLogs, "/getstatuslogs", endpoint="getStatusLogs")
-"""
 api.add_resource(getStatus, "/getstatus", endpoint="getStatus")
 
 api.add_resource(
@@ -236,5 +279,14 @@ api.add_resource(
 api.add_resource(getMetadata, "/getmetadata", endpoint="getMetadata")
 api.add_resource(postImage, "/postimage", endpoint="postImage")
 
+api.add_resource(
+    postDoorbellSettings, "/postdoorbellsettings", endpoint="postDoorbellSettings"
+)
+api.add_resource(
+    postDatabaseSettings, "/postdatabasesettings", endpoint="postDatabaseSettings"
+)
+api.add_resource(
+    postComprefaceSettings, "/postcomprefacesettings", endpoint="postComprefaceSettings"
+)
 
-app.run()
+app.run(host="100.106.18.99", port=5050, debug=True)

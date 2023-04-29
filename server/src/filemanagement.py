@@ -15,6 +15,35 @@ redis-cli FLUSHDB
 """
 
 
+def setComprefaceSettings(address, port, api_key):
+    with open(constants.DOORBELL_SETTINGS_PATH, "r") as jsonFile:
+        data = json.load(jsonFile)
+        data["Compreface Settings"][0]["Domain"] = address
+        data["Compreface Settings"][1]["Port"] = port
+        data["Compreface Settings"][2]["API Key"] = api_key
+    with open(constants.DOORBELL_SETTINGS_PATH, "w") as jsonFile:
+        json.dump(data, jsonFile, indent=4)
+
+
+def setDoorbellSettings(address, port, password):
+    with open(constants.DOORBELL_SETTINGS_PATH, "r") as jsonFile:
+        data = json.load(jsonFile)
+        data["Connection Settings"][0]["Address/Domain"] = address
+        data["Connection Settings"][1]["Port"] = port
+        data["Connection Settings"][2]["AES Encryption Password"] = password
+    with open(constants.DOORBELL_SETTINGS_PATH, "w") as jsonFile:
+        json.dump(data, jsonFile, indent=4)
+
+
+def setDatabaseSettings(address, port):
+    with open(constants.DOORBELL_SETTINGS_PATH, "r") as jsonFile:
+        data = json.load(jsonFile)
+        data["Connection Settings"][0]["Host"] = address
+        data["Connection Settings"][1]["Port"] = port
+    with open(constants.DOORBELL_SETTINGS_PATH, "w") as jsonFile:
+        json.dump(data, jsonFile, indent=4)
+
+
 def testConnectionToDatabase():
     r = redis.Redis("127.0.0.1", socket_connect_timeout=1)
     r.ping()
@@ -60,6 +89,14 @@ def getMetadataFromDatabase(filename):
         return None
     metadata = metadata.decode()
     return metadata
+
+
+def getListOfKeysFromDatabase():
+    config = json.load(open(constants.REDIS_SETTINGS_PATH))
+    address = config["Connection Settings"][0]["Host"]
+    port = int(config["Connection Settings"][1]["Port"])
+    redis_metadata = redis.StrictRedis(host=address, port=port, db=0)
+    return redis_metadata.scan_iter("*")
 
 
 def getComprefaceUuidFromDatabase(filename):

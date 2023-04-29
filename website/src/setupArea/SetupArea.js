@@ -14,9 +14,18 @@ class SetupArea extends React.PureComponent {
     this.setCfaceAddr = this.setCfaceAddr.bind(this);
     this.setCfacePort = this.setCfacePort.bind(this);
     this.setCfacePass = this.setCfacePass.bind(this);
+    this.setDbellAddr = this.setDbellAddr.bind(this);
+    this.setDbellPort = this.setDbellPort.bind(this);
+    this.setDbellPass = this.setDbellPass.bind(this);
+    this.setDbaseAddr = this.setDbaseAddr.bind(this);
+    this.setDbasePort = this.setDbasePort.bind(this);
     this.switchToCompreface = this.switchToCompreface.bind(this);
     this.switchToDoorbell = this.switchToDoorbell.bind(this);
     this.switchToDatabase = this.switchToDatabase.bind(this);
+    this.handleCfacePost = this.handleCfacePost.bind(this);
+    this.handleDbellPost = this.handleDbellPost.bind(this);
+    this.handleDbasePost = this.handleDbasePost.bind(this);
+
     this.state = {
       currentView: "Doorbell",
       // connStatus: false,
@@ -64,6 +73,42 @@ class SetupArea extends React.PureComponent {
       this.props.changeArea(Areas.setup_area)
     }
   }
+
+  handleCfacePost(e) {
+    const {cfaceAddr, cfacePort, cfacePass} = this.state; 
+    e.preventDefault();
+    try {
+      fetch(`${apiHost}/postcomprefacesettings?address=${cfaceAddr}&port=${cfacePort}&api_key=${cfacePass}`, {
+        method: "POST"
+      }).then();
+    } catch (err) {
+      console.err(err);
+    }
+  }
+
+  handleDbellPost(e) {
+    const {dbellAddr, dbellPort, dbellPass} = this.state; 
+    e.preventDefault();
+    try {
+      fetch(`${apiHost}/postcomprefacesettings?address=${dbellAddr}&port=${dbellPort}&password=${dbellPass}`, {
+        method: "POST"
+      }).then();
+    } catch (err) {
+      console.err(err);
+    }
+  }
+
+  handleDbasePost(e) {
+    const {dbaseHost, dbasePort } = this.state; 
+    e.preventDefault();
+    try {
+      fetch(`${apiHost}/postdatabasesettings?address=${dbaseHost}&port=${dbasePort}`, {
+        method: "POST"
+      }).then();
+    } catch (err) {
+      console.err(err);
+    }
+  }
   
   setCfaceAddr(e) {
     this.setState({
@@ -80,6 +125,36 @@ class SetupArea extends React.PureComponent {
   setCfacePass(e) {
     this.setState({
       cfacePass: e.target.value
+    })
+  }
+
+  setDbellAddr(e) {
+    this.setState({
+      dbellAddr: e.target.value
+    })
+  }
+
+  setDbellPort(e) {
+    this.setState({
+      dbellPort: e.target.value
+    })
+  }
+
+  setDbellPass(e) {
+    this.setState({
+      dbellPass: e.target.value
+    })
+  }
+  
+  setDbaseAddr(e) {
+    this.setState({
+      dbaseHost: e.target.value
+    })
+  }
+
+  setDbasePort(e) {
+    this.setState({
+      dbasePort: e.target.value
     })
   }
 
@@ -101,15 +176,7 @@ class SetupArea extends React.PureComponent {
     })
   }
 
-  // handleCfacePost() {
-  //   try {
-  //     fetch(`${apiHost}/getstatus`, {
-  //       method: "GET"
-  //     })
-  //   } catch (err) {
-  //     console.err(err);
-  //   }
-  // }
+  
 
   render() {
     const { currentView, cfaceConn, dbaseConn, dbellConn, cfaceAddr, cfacePort, cfacePass, dbellAddr, dbellPort, dbellPass, dbaseHost, dbasePort} = this.state;
@@ -133,7 +200,7 @@ class SetupArea extends React.PureComponent {
               <div className="setupFormContainer">
               <span className="setupFormHeader">Compreface Setup</span>
               <span className={`setupFormSubHeader ${cfaceConn ? "good": "bad"}`}>{!cfaceConn && "Not "}Connected</span>
-              <form>
+              <form onSubmit={this.handleCfacePost}>
               <div className="formOptionContainer">
                 <span className="formOptionLabel">Address</span>
                 <input
@@ -171,14 +238,14 @@ class SetupArea extends React.PureComponent {
             <div className="setupFormContainer">
               <span className="setupFormHeader">Doorbell Setup</span>
               <span className={`setupFormSubHeader ${dbellConn ? "good": "bad"}`}>{!dbellConn && "Not "}Connected</span>
-              <form>
+              <form onSubmit={this.handleDbellPost}>
               <div className="formOptionContainer">
                 <span className="formOptionLabel">Address</span>
                 <input
                   type="text"
                   value={dbellAddr}
                   placeholder="127.0.0.0"
-                  // onChange={(e) => setAddress(e.target.value)}
+                  onChange={this.setDbellAddr}
                   required
                 />
               </div>
@@ -188,7 +255,7 @@ class SetupArea extends React.PureComponent {
                   type="text"
                   value={dbellPort}
                   placeholder="8001"
-                  // onChange={(e) => setAddress(e.target.value)}
+                  onChange={this.setDbellPort}
                   required
                 />
               </div>
@@ -198,7 +265,7 @@ class SetupArea extends React.PureComponent {
                   type="password"
                   value={dbellPass}
                   placeholder="password"
-                  // onChange={(e) => setAddress(e.target.value)}
+                  onChange={this.setDbellPass}
                   required
                 />
               </div> 
@@ -210,14 +277,14 @@ class SetupArea extends React.PureComponent {
               <span className="setupFormHeader">Database Setup</span>
               <span className={`setupFormSubHeader ${dbaseConn ? "good": "bad"}`}>{!dbaseConn && "Not "}Connected</span>
 
-              <form>
+              <form onSubmit={this.handleDbasePost}>
                 <div className="formOptionContainer">
                   <span className="formOptionLabel">Host</span>
                   <input
                     type="text"
                     value={dbaseHost}
                     placeholder="127.0.0.0"
-                    // onChange={(e) => setAddress(e.target.value)}
+                    onChange={this.setDbaseAddr}
                     required
                   />
                 </div>
@@ -227,7 +294,7 @@ class SetupArea extends React.PureComponent {
                     type="text"
                     value={dbasePort}
                     placeholder="5001"
-                    // onChange={(e) => setAddress(e.target.value)}
+                    onChange={this.setDbasePort}
                     required
                   />
                 </div>

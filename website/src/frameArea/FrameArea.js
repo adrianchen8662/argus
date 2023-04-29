@@ -6,7 +6,6 @@ import axios from 'axios';
 import Frame from "./frame/Frame";
 // import Timeline from "./timeline/Timeline";
 import { getCurrentEvent } from "../redux/selectors";
-import { frameDetails } from "../statics/testDetails";
 import { ReactComponent as Left } from "../statics/lArrow.svg";
 import { ReactComponent as Right } from "../statics/RArrow.svg";
 import { getFileNameFromTimestamp } from "../constants";
