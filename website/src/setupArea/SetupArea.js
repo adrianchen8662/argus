@@ -90,7 +90,7 @@ class SetupArea extends React.PureComponent {
     const {dbellAddr, dbellPort, dbellPass} = this.state; 
     e.preventDefault();
     try {
-      fetch(`${apiHost}/postcomprefacesettings?address=${dbellAddr}&port=${dbellPort}&password=${dbellPass}`, {
+      fetch(`${apiHost}/postdoorbellsettings?address=${dbellAddr}&port=${dbellPort}&password=${dbellPass}`, {
         method: "POST"
       }).then();
     } catch (err) {

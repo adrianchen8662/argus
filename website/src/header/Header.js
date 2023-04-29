@@ -90,8 +90,8 @@ class Header extends React.Component {
               <span className={`headerStatusSpan ${connStatus ? "good" : "bad"}`}>conn</span>
               <div className="headerStatusPtsContainer">
                 <span className={`headerStatusSpan2 ${cfaceConn ? "good" : "bad"}`}>•</span>
-                <span className={`headerStatusSpan2 ${dbaseConn ? "good" : "bad"}`}>•</span>
                 <span className={`headerStatusSpan2 ${dbellConn ? "good" : "bad"}`}>•</span>
+                <span className={`headerStatusSpan2 ${dbaseConn ? "good" : "bad"}`}>•</span>
               </div>
             </div>
             {(currentArea === Areas.frame_area || currentArea === Areas.setup_area)  && <Logo id="logoImg" className="headerCurrentHeading"/>}
