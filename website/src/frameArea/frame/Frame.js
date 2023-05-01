@@ -44,10 +44,12 @@ class Frame extends React.Component {
           
           // resJSON[key].replace('"','\'');
           const frameDetails = JSON.parse(validJsonStr);
+          const memberName = frameDetails.Identification
+          const eventType = /(Unknown|Delivery)/mg.test(frameDetails.Identification) ? frameDetails.Identification : "Family";
           that.setState({
             frameConf: frameDetails.Confidence,
-            frameStatus: frameDetails.Identification,
-            frameMemberID: frameDetails["Compreface ID"],
+            frameStatus: eventType,
+            frameMemberID: memberName,
           })
         });
       } catch (err) {

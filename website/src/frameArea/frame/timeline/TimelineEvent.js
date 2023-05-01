@@ -59,6 +59,7 @@ class TimelineEvent extends React.PureComponent {
   render() {
     const { currentView } = this.state;
     const { eventType, timestamp, familyList, memberName } = this.props;
+
     return (
       <div className="timelineEvent">
         {currentView === TIMELINE_VIEWS.basic_view &&<div className="frameTimelinePart timelineEventDetails timelineEventType">
@@ -82,7 +83,7 @@ class TimelineEvent extends React.PureComponent {
             <span className="timelineEventFamilyTextHead">Add To Family?</span>
             <div className="timelineFamilyMList">
               {familyList.map((familyMember) => (
-                <div className="timelineFamilyM" onClick={(e) => this.handleAssignFamilyMember(e, familyMember)}>{familyMember}</div>
+                <div className="timelineFamilyM" onClick={(e) => this.handleAssignFamilyMember(e, familyMember)}>{`${familyMember.split(' ')[0]} ${familyMember.split(' ')[1][0]}.`}</div>
                 ))
               }
             </div>
@@ -93,7 +94,7 @@ class TimelineEvent extends React.PureComponent {
           </div>}
           {eventType === "Family" && currentView === TIMELINE_VIEWS.basic_view &&
           <div className="timelineEventButtonContainer"> 
-            <div className="timelineFamilyM">{memberName}</div>
+            <div className="timelineFamilyM">{`${memberName.split(' ')[0]} ${memberName.split(' ')[1][0]}.`}</div>
           </div>}
         </div>
       </div>

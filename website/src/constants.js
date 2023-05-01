@@ -18,34 +18,35 @@ export const FamilyAreaViews = {
 }
 
 export const months = {
-  1: "Jan",
-  2: "Feb",
-  3: "Mar",
-  4: "Apr",
-  5: "May",
-  6: "Jun",
-  7: "Jul",
-  8: "Aug",
-  9: "Sep",
-  10: "Oct",
-  11: "Nov",
-  12: "Dec"
+  0: "Jan",
+  1: "Feb",
+  2: "Mar",
+  3: "Apr",
+  4: "May",
+  5: "Jun",
+  6: "Jul",
+  7: "Aug",
+  8: "Sep",
+  9: "Oct",
+  10: "Nov",
+  11: "Dec"
 }
 
 export const days = {
-  1: "Monday",
-  2: "Tuesday",
-  3: "Wednesday",
-  4: "Thursday",
-  5: "Friday",
-  6: "Saturday",
-  7: "Sunday"
+  0: "Monday",
+  1: "Tuesday",
+  2: "Wednesday",
+  3: "Thursday",
+  4: "Friday",
+  5: "Saturday",
+  6: "Sunday"
 }
 
 
 export const calcDate = (timestamp) => {
   const dateTime = new Date(0);
   dateTime.setUTCSeconds(timestamp);
+  console.log(dateTime.getDay());
   const dateString = `${days[dateTime.getDay()]}, ${months[dateTime.getMonth()]} ${dateTime.getDate()}`;
   return dateString;
 };
