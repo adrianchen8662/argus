@@ -107,4 +107,4 @@ export const TIMELINE_VIEWS = {
 
 export const getFileNameFromTimestamp = (timestamp) => `${timestamp}.jpg`
 
-export const apiHost = "http://localhost:8010/proxy"
+export const apiHost = "http://192.168.1.125:5050" // "http://localhost:8010/proxy"

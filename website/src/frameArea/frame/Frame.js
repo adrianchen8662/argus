@@ -6,6 +6,7 @@ import { getTimestampFromImgSrc, apiHost } from "../../constants";
 class Frame extends React.Component {
   constructor(props) {
     super(props);
+    this.initFrame = this.initFrame.bind(this);
     this.state = {
       frameConf: -1,
       frameStatus: null,
@@ -14,46 +15,44 @@ class Frame extends React.Component {
   }
 
   componentDidMount() {
-    const { imgSrc } = this.props;
-    const that = this;
-    try {
-      fetch(`${apiHost}/getmetadata?timestamp=${imgSrc}`, {
-        method: "GET",
-      }).then((res) => res.json())
-      .then((resJSON) => { 
-        console.log("CalledMeta", resJSON);
-        that.setState({
-          frameConf: resJSON.confidence,
-          frameStatus: resJSON.Identification,
-          frameMemberID: resJSON["Compreface ID"],
-        })
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    this.initFrame();
   }
 
   componentDidUpdate(prevProps) {
     const { imgSrc } = this.props;
-    
+
     if(imgSrc !== prevProps.imgSrc){
-      const that = this;
+      this.initFrame();
+    }
+  }
+
+  initFrame() {
+    const { imgSrc } = this.props;
+    const that = this;
       try {
         fetch(`${apiHost}/getmetadata?timestamp=${imgSrc}`, {
           method: "GET",
         }).then((res) => res.json())
         .then((resJSON) => { 
           console.log("CalledMeta", resJSON);
+          const validJsonStr = resJSON[imgSrc]
+                                .replace(/'/g, '"')
+                                .replace(/(Filename|Date|Time|Status|Compreface ID|Identification|Confidence):/g, '"$1":')
+                                .replace(/: ([^,]+),/g, ': "$1",')
+
+          console.log("here::", validJsonStr);
+          
+          // resJSON[key].replace('"','\'');
+          const frameDetails = JSON.parse(validJsonStr);
           that.setState({
-            frameConf: resJSON.confidence,
-            frameStatus: resJSON.Identification,
-            frameMemberID: resJSON["Compreface ID"],
+            frameConf: frameDetails.Confidence,
+            frameStatus: frameDetails.Identification,
+            frameMemberID: frameDetails["Compreface ID"],
           })
         });
       } catch (err) {
         console.log(err);
       }
-    }
   }
 
   
@@ -61,7 +60,6 @@ class Frame extends React.Component {
     const images = require.context('../../../public/img/data_storage', true);
     const { imgSrc, familyList } = this.props; 
     const { frameConf, frameStatus, frameMemberID } = this.state;
-    console.log("imgSrc", imgSrc)
     const img = images(`./${imgSrc}.jpg`);
     return (
       <div className={`frame frame-${frameStatus}`} id="12">
