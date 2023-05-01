@@ -20,8 +20,21 @@ def sendFrame(file_to_send, file_name):
     port_number = config["Connection Settings"][1]["Port"]
 
     url = "http://" + address + ":" + port_number + "/postimage"
+
+    print(url)
+
     my_img = {"image": open(file_to_send, "rb")}
-    r = requests.post(url, files=my_img)
+    try:
+        r = requests.post(url, files=my_img)
+    except requests.exceptions.ConnectionError:
+        print(
+            "Connection refused, exception thrown requests.exceptions.ConnectionError"
+        )
+        return False
+
+    if r.status_code == 404:
+        print("Connection refused, status code 404")
+        return False
 
     # convert server response into JSON format.
     if r.json() == "Ok":

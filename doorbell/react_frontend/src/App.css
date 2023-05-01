@@ -1,30 +1,152 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded&display=swap');
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background-color: #000;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#AppContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#setupFormContainer {
+    margin-top: 134px;
+    padding-top: 16px;
+    width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 5rem;
-  }
-  input {
-    display: block;
-    width: 20rem;
-    height: 2rem;
-    padding: 0.5rem;
-    font-size: 1.1em;
+    /* height: calc(100vh - 164px); */
+    height: 60%;
+}
+
+#welcomeContainer {}
+
+#mainWelcome {}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    justify-content: space-evenly;
+}
+
+.formOptionContainer {
+    width: 100%;
+    height: 80px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.formOptionLabel {
+    line-height: 80px;
+    width: 140px;
+    padding: 0 15px;
+    background-color: #fff;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 20px;
+}
+
+input {
+    height: 80px;
+    padding: 15px 30px;
+    flex-grow: 1;
+    font-size: 25px;
     font-weight: 500;
-    margin-bottom: 2rem;
-  }
-  button {
+    letter-spacing: 0.33rem;
+    /* margin-bottom: 2rem; */
+    font-family: 'Unbounded', sans-serif;
+    background-color: rgba(0, 0, 0, 0);
+    color: #fff;
+    border: #fff 3px solid;
+    box-sizing: border-box;
+}
+
+input:focus {
+    /* color: #fff; */
+    /* border: #9BE564 3px solid; */
+    -webkit-filter: drop-shadow( 0px 0px 10px #FFFFFF);
+    filter: drop-shadow( 0px 0px 10px #FFFFFF);
+    text-decoration: none;
+    outline: none;
+}
+
+button {
     border: none;
-    padding: 1rem;
-    width: 21.2rem;
-    font-size: 1.2em;
-    border-radius: 0.2rem;
+    width: 100%;
+    height: 80px;
     cursor: pointer;
-  }
-  button:hover {
-    background-color: #c5c5c5;
-  }
-  .message {
-    font-size: 1.2em;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 25px;
+}
+
+button:hover {
+    -webkit-filter: drop-shadow( 0px 0px 10px #FFFFFF);
+    filter: drop-shadow( 0px 0px 10px #FFFFFF);
+}
+
+button:focus {
+    outline: none;
+}
+
+.message {
+    font-family: 'Unbounded';
+    font-size: 25px;
     text-align: center;
-    color: #36a936;
-  }
+    color: #9BE564;
+    -webkit-filter: drop-shadow( 0px 0px 10px #9BE564);
+    filter: drop-shadow( 0px 0px 10px #9BE564);
+}
+
+.no_message {
+    display: none;
+}
+
+.switchView {
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.switchViewSpan {
+    font-family: 'Unbounded';
+    font-size: 20px;
+    color: #fff;
+}
+
+.logs {
+    height: 90%;
+    border: #fff 3px solid;
+    width: 50%;
+}
+
+.logHeaderContainer {
+    width: 100%;
+    text-align: center;
+    background-color: #fff;
+}
+
+.logHeader {
+    font-family: 'Unbounded';
+    font-size: 40px;
+    color: #000;
+}
+
+@media (max-width: 1000px) {
+    form {
+        width: 80%;
+    }
+    span,
+    input {
+        font-size: 10px!important;
+    }
+}

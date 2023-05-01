@@ -13,6 +13,7 @@ import encrypt
 def detection():
     face_cascade = cv2.CascadeClassifier(constants.FACE_REG_DATA_PATH)
     print("Video Capture Starting")
+    print(constants.FACE_REG_DATA_PATH)
     video_capture = cv2.VideoCapture(0)
 
     send_delay = 0
@@ -107,11 +108,11 @@ def detection():
                 filemanagement.updateStatus("False")
 
         # Display the resulting frame
-        cv2.imshow("Video", frame)
+        # cv2.imshow("Video", frame)
 
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
     # When everything is done, release the capture
     video_capture.release()
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
