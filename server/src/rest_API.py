@@ -6,6 +6,7 @@ import re
 import requests
 from json import load
 import json
+import collections
 
 import constants
 import filemanagement
@@ -28,7 +29,9 @@ class getStatusLogs(Resource):  # /getstatuslogs
             list_of_keys[i] = list_of_keys[i].decode("utf-8")
         for key in list_of_keys:
             return_dict[key] = filemanagement.getMetadataFromDatabase(key)
-        return return_dict, 200
+            
+        ordered_dict = collections.OrderedDict(sorted(return_dict.items()))
+        return ordered_dict, 200
 
 
 # gets the connection status of doorbell and server
