@@ -38,7 +38,16 @@ class App extends React.PureComponent {
         method: "GET",
       }).then((res) => res.json())
       .then((resJSON) => { 
-        that.setState({framesList: resJSON.Logfile});
+        console.log(resJSON);
+        const frameList = Object.keys(resJSON).map((key) => {
+          const validJsonStr = resJSON[key].replace(/'/g, '"').replace(/([a-zA-Z0-9 ]+?):/g, '"$1":').replace(/([a-zA-Z0-9 ]+?),/g, '"$1",').replace(/ /g,'');
+          // console.log(validJsonStr)
+          
+          // resJSON[key].replace('"','\'');
+          return JSON.parse(validJsonStr);
+        });
+
+        that.setState({framesList: frameList});
       });
     } catch (err) {
       console.log(err);
