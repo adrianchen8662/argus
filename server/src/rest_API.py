@@ -105,6 +105,25 @@ class changeFamilyInImage(Resource):
         return "Ok", 200
 
 
+class getFamilyMemberFrames(Resource):
+    def get(self):
+        name = (request.args).get("name")
+        return_dict = {}
+        found_dict = {}
+        list_of_keys = list(filemanagement.getListOfKeysFromDatabase())
+        for i in range(len(list_of_keys)):
+            list_of_keys[i] = list_of_keys[i].decode("utf-8")
+        for key in list_of_keys:
+            return_dict[key] = filemanagement.getMetadataFromDatabase(key)
+        
+        for key, value in return_dict.items():
+            if name in value:
+                found_dict[key] = value
+        
+        ordered_dict = collections.OrderedDict(sorted(found_dict.items()))
+        return ordered_dict, 200
+        
+
 # adds a new family member name
 class postNewFamilyMember(Resource):  # /postnewfamilymember?name=<name>
     def post(self):
@@ -270,6 +289,9 @@ api.add_resource(
     changeFamilyInImage, "/changefamilyinimage", endpoint="changeFamilyInImage"
 )
 '''
+api.add_resource(
+    getFamilyMemberFrames, "/getfamilymemberframes", endpoint="getFamilyMemberFrames"
+)
 api.add_resource(
     postNewFamilyMember, "/postnewfamilymember", endpoint="postNewFamilyMember"
 )
