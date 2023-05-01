@@ -50,7 +50,7 @@ class FamilyMemberFrames extends React.PureComponent {
           });
           console.log(frameList);
           that.setState({
-            frameList: frameList.map((frame) =>  <TimelineFrame type={frame.Identification} imgSrc={frame.Filename} imgId={frame["Compreface ID"]}/>),
+            frameList: frameList.slice(0).reverse().map((frame) =>  <TimelineFrame key={frame.Filename} type={frame.Identification} imgSrc={frame.Filename} imgId={frame["Compreface ID"]}/>),
           })
           // resJSON[key].replace('"','\'');
           
@@ -63,6 +63,12 @@ class FamilyMemberFrames extends React.PureComponent {
   render() {
     const { memberId, backHandler } = this.props; 
     const {frameList} = this.state;
+    const images = require.context('../../../public/img/data_storage', true);
+    let img = "";
+    if(frameList) { 
+      img = images(`./${frameList[0].key}.jpg`);
+    }
+
     return (
       <div className="memberFramesContainer movingIn">
         <div className="memberFramesHeader">
@@ -76,7 +82,7 @@ class FamilyMemberFrames extends React.PureComponent {
             {memberId}
           </div>
           <div className="memberHeaderDetails">
-            <img className="memberImg headerImg" src="https://dummyimage.com/800x800/ffffff/000000" alt="profile img"/>
+            {frameList && <img className="memberImg headerImg" src={`${img}`} alt="profile img"/>}
           </div>
         </div>
         <div id="memberFramesComponent">

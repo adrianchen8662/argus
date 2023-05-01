@@ -9,6 +9,7 @@ import FamilyMember from "./familyMember/FamilyMember"
 import { FamilyAreaViews, apiHost } from "../constants";
 import FamilyMemberFrames from "./familyMember/FamilyMemberFrames";
 import { ReactComponent as Back } from "../statics/back.svg"
+import TimelineFrame from "../timelineArea/timelineFrame/TimelineFrame";
 
 
 class FamilyArea extends React.PureComponent {
@@ -26,6 +27,7 @@ class FamilyArea extends React.PureComponent {
       memberId: null,
       memberName: '',
       memberPhoto: null,
+      leadFrameList: null,
     }
   }
 
@@ -79,6 +81,11 @@ class FamilyArea extends React.PureComponent {
     }
   };
 
+  getleadFrame(memberName) {
+    const { leadFrameList } = this.state;
+    return leadFrameList[memberName];
+  }
+
   allMembers = () =>  {
     const {familyList} = this.state;
 
@@ -123,33 +130,51 @@ class FamilyArea extends React.PureComponent {
     </div> );
   }
 
-
   initFamilyArea() {
     const {getFamilyList, familyListReady} = this.props;
     const {familyList} = this.state;
+    const that = this;
     let currList = null
     if(!familyList && familyListReady) {
       currList = getFamilyList();
-      console.log("didUpdate", currList);
       if(currList) {
-        this.setState({
-          familyList: currList.map((familyMember, i) => (
-          <FamilyMember 
-            key={familyMember}
-            familyMemberId={i} 
-            // imgSrc={familyMember.profile_photo} 
-            name={familyMember}
-            clickHandler={(e) => this.handleMemberClick.bind(this)(e, i)}
-          />)
-  )
-
+        const leadFrameList = {};
+        currList.forEach((memberId) => {
+          let fileName = "none";
+          try {
+            fileName = fetch(`${apiHost}/getfamilymemberframes?name=${memberId}`, {
+              method: "GET",
+            }).then((res) => res.json())
+            .then((resJSON) => {leadFrameList[memberId] = Object.keys(resJSON)[Object.keys(resJSON).length - 1]})
+            .then(() => {
+              
+              that.setState({
+                leadFrameList,
+                familyList: currList.map((familyMember, i) => (
+                <FamilyMember 
+                  key={familyMember}
+                  familyMemberId={i} 
+                  getImgSrc={this.getleadFrame.bind(this) } 
+                  name={familyMember}
+                  clickHandler={(e) => this.handleMemberClick.bind(this)(e, i)}
+                />))
+              })
+            });
+          } catch (err) {
+            console.log(err);
+          } 
         });
+        
+        
+        
       }
     }
   }
 
+
   render() {
-    const { currentFamilyView } = this.state;
+    const { currentFamilyView, leadFrameList } = this.state;
+
     return (
       <div id="familyArea" className="mainViewArea">
         <div id="familyMembersList" className="movingIn">

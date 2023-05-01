@@ -13,7 +13,7 @@
 }
 
 .memberImg {
-    background-color: #d9d9d9;
+    /* background-color: #d9d9d9; */
     height: 250px;
     width: 250px;
     border-radius: 10%;
@@ -24,8 +24,10 @@
 
 .headerImg {
     height: 100px;
-    width: auto;
-    border: 0px;
+    width: 100px;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-sizing: border-box;
 }
 
 .memberDetails {
@@ -45,6 +47,16 @@
     -webkit-filter: drop-shadow( 0px 0px 6px #9be564);
     filter: drop-shadow( 0px 0px 6px #9be564);
     cursor: pointer;
+}
+
+.memberLead {
+    width: auto;
+    height: 100%;
+    border: 0px;
+}
+
+.memberLead path {
+    fill: #fff;
 }
 
 .memberDetails span {
@@ -154,6 +166,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     flex-wrap: wrap;
+    height: calc();
     overflow-y: scroll;
     justify-items: center;
 }
@@ -192,5 +205,23 @@ img {
     to {
         font-size: 26px;
         line-height: 26px;
+    }
+}
+
+@media (max-width: 1500px) {
+    #memberFramesScroller {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    #memberFramesScroller {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    #memberFramesScroller {
+        grid-template-columns: repeat(1, 1fr);
     }
 }
