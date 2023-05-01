@@ -4,12 +4,10 @@
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 import "./FamilyArea.css";
 import React from "react";
-import axios from 'axios';
 import FamilyMember from "./familyMember/FamilyMember"
 import { FamilyAreaViews, apiHost } from "../constants";
 import FamilyMemberFrames from "./familyMember/FamilyMemberFrames";
 import { ReactComponent as Back } from "../statics/back.svg"
-import TimelineFrame from "../timelineArea/timelineFrame/TimelineFrame";
 
 
 class FamilyArea extends React.PureComponent {

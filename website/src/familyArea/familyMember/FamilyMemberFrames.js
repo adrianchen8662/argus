@@ -65,7 +65,7 @@ class FamilyMemberFrames extends React.PureComponent {
     const {frameList} = this.state;
     const images = require.context('../../../public/img/data_storage', true);
     let img = "";
-    if(frameList) { 
+    if(frameList && frameList.length) { 
       img = images(`./${frameList[0].key}.jpg`);
     }
 
