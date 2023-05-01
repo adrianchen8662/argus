@@ -46,7 +46,6 @@ export const days = {
 export const calcDate = (timestamp) => {
   const dateTime = new Date(0);
   dateTime.setUTCSeconds(timestamp);
-  console.log(dateTime.getDay());
   const dateString = `${days[dateTime.getDay()]}, ${months[dateTime.getMonth()]} ${dateTime.getDate()}`;
   return dateString;
 };

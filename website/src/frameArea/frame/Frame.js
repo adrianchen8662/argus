@@ -44,7 +44,7 @@ class Frame extends React.Component {
           
           // resJSON[key].replace('"','\'');
           const frameDetails = JSON.parse(validJsonStr);
-          const memberName = frameDetails.Identification
+          const memberName = frameDetails.Identification;
           const eventType = /(Unknown|Delivery)/mg.test(frameDetails.Identification) ? frameDetails.Identification : "Family";
           that.setState({
             frameConf: frameDetails.Confidence,
