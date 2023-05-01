@@ -1,10 +1,12 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from flask_cors import CORS
 import time
 import re
 import requests
 from json import load
+import json
+import collections
 
 import constants
 import filemanagement
@@ -21,46 +23,48 @@ api = Api(app)
 # returns the entire metadata log
 class getStatusLogs(Resource):  # /getstatuslogs
     def get(self):
-        json_string = "{Logfile: ["
+        return_dict = {}
         list_of_keys = list(filemanagement.getListOfKeysFromDatabase())
         for i in range(len(list_of_keys)):
             list_of_keys[i] = list_of_keys[i].decode("utf-8")
         for key in list_of_keys:
-            json_string += filemanagement.getMetadataFromDatabase(key) + ", "
-        json_string += "]}"
-        return json_string, 200
+            return_dict[key] = filemanagement.getMetadataFromDatabase(key)
+            
+        ordered_dict = collections.OrderedDict(sorted(return_dict.items()))
+        return ordered_dict, 200
 
 
 # gets the connection status of doorbell and server
 class getStatus(Resource):  # /getstatus
     def get(self):
         # Test Compreface connection
-        return_string = "{"
+        return_dict = {}
         try:
             categorize.testConnectiontoCompreface()
         except:
-            return_string += "Compreface: false, "
+            return_dict["Compreface"] = False
         else:
-            return_string += "Compreface: true, "
+            return_dict["Compreface"] = True
         # Test Database connection
         try:
             filemanagement.testConnectionToDatabase()
         except:
-            return_string += "Database: false, "
+            return_dict["Database"] = False
         else:
-            return_string += "Database: true, "
+            return_dict["Database"] = True
         # Test Doorbell connection
         config = load(open(constants.DOORBELL_SETTINGS_PATH))
-        address = config["Connection Settings"][0]["Address/Domain"]
+        address = config["Connection Settings"][0]["Host"]
         port_number = config["Connection Settings"][1]["Port"]
         url = "http://" + address + ":" + port_number + "/testconnection"
         try:
             requests.get(url, timeout=1)  # timeout so no infinite loop
         except:
-            return_string += "Doorbell: false}"
+            return_dict["Doorbell"] = False
         else:
-            return_string += "Doorbell: true}"
-        return return_string, 200
+            return_dict["Doorbell"] = True
+        
+        return return_dict, 200
 
 
 # BUG: allows for the same exact image to be posted onto a member. Not a critical bug, as it doesn't affect much, but might cause issues with storage
@@ -81,7 +85,8 @@ class removeFamilyInImage(Resource):
     def post(self):
         timestamp = (request.args).get("timestamp")
         compreface_uuid = filemanagement.getComprefaceUuidFromDatabase(timestamp)
-        print(compreface_uuid)
+        if compreface_uuid == None:
+            return "Timestamp not found", 400
         test = str(categorize.deleteImage(compreface_uuid))
         print(test)
         return "Ok", 200
@@ -123,7 +128,8 @@ class removeFamilyMember(Resource):
 class getFamilyList(Resource):  # /getfamilylist
     def get(self):
         list = categorize.listFamilyMembers()
-        return str(list), 200
+        print(list)
+        return list, 200
 
 
 class postRemoveDetected(Resource):  # /removedetected?timestamp=<timestamp>
@@ -134,11 +140,13 @@ class postRemoveDetected(Resource):  # /removedetected?timestamp=<timestamp>
 # returns the metadata for a specific file
 class getMetadata(Resource):  # /getmetadata?timestamp=<timestamp>
     def get(self):
+        return_dict = {}
         timestamp = (request.args).get("timestamp")
         metadata = filemanagement.getMetadataFromDatabase(timestamp)
         if metadata == None:
             return "Error: no entry with given timestamp found", 400
-        return metadata, 200
+        return_dict[timestamp] = metadata
+        return return_dict, 200 # TODO: check what this returns
 
 
 # gets an image from the doorbell and processes it
@@ -253,18 +261,15 @@ api.add_resource(getStatus, "/getstatus", endpoint="getStatus")
 api.add_resource(
     assignFamilyToImage, "/assignfamilytoimage", endpoint="assignFamilyToImage"
 )
-# BUG: This does not work. The compreface uuid in filemanagement does not work
-"""
+'''
 api.add_resource(
     removeFamilyInImage, "/removefamilyinimage", endpoint="removeFamilyInImage"
 )
-"""
-# BUG: Same issue as above.
-"""
+
 api.add_resource(
     changeFamilyInImage, "/changefamilyinimage", endpoint="changeFamilyInImage"
 )
-"""
+'''
 api.add_resource(
     postNewFamilyMember, "/postnewfamilymember", endpoint="postNewFamilyMember"
 )
@@ -289,4 +294,4 @@ api.add_resource(
     postComprefaceSettings, "/postcomprefacesettings", endpoint="postComprefaceSettings"
 )
 
-app.run(host="100.106.18.99", port=5050, debug=True)
+app.run(host="192.168.1.125", port=5050, debug=True)
