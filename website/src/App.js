@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 import "./App.css";
 import React from "react";
 import { connect } from "react-redux";
@@ -40,8 +42,12 @@ class App extends React.PureComponent {
       .then((resJSON) => { 
         console.log(resJSON);
         const frameList = Object.keys(resJSON).map((key) => {
-          const validJsonStr = resJSON[key].replace(/'/g, '"').replace(/([a-zA-Z0-9 ]+?):/g, '"$1":').replace(/([a-zA-Z0-9 ]+?),/g, '"$1",').replace(/ /g,'');
-          // console.log(validJsonStr)
+          const validJsonStr = resJSON[key]
+                                .replace(/'/g, '"')
+                                .replace(/(Filename|Date|Time|Status|Compreface ID|Identification|Confidence):/g, '"$1":')
+                                .replace(/: ([^,]+),/g, ': "$1",')
+
+          console.log(validJsonStr)
           
           // resJSON[key].replace('"','\'');
           return JSON.parse(validJsonStr);
