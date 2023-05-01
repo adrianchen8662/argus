@@ -28,7 +28,7 @@ def setComprefaceSettings(address, port, api_key):
 def setDoorbellSettings(address, port, password):
     with open(constants.DOORBELL_SETTINGS_PATH, "r") as jsonFile:
         data = json.load(jsonFile)
-        data["Connection Settings"][0]["Address/Domain"] = address
+        data["Connection Settings"][0]["Host"] = address
         data["Connection Settings"][1]["Port"] = port
         data["Connection Settings"][2]["AES Encryption Password"] = password
     with open(constants.DOORBELL_SETTINGS_PATH, "w") as jsonFile:
@@ -45,7 +45,7 @@ def setDatabaseSettings(address, port):
 
 
 def testConnectionToDatabase():
-    r = redis.Redis("127.0.0.1", socket_connect_timeout=1)
+    r = redis.Redis("127.0.0.1", socket_connect_timeout=1) # TODO: should be changed based on redisdatabasesettings.json
     r.ping()
 
 

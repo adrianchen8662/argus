@@ -1,11 +1,10 @@
 {
     "Connection Settings": [
         {
-            "Address/Domain": "100.112.129.66",
-            "Host": "localhost"
+            "Host": "192.168.1.144"
         },
         {
-            "Port": "6379"
+            "Port": "5000"
         },
         {
             "AES Encryption Password": "ThisIsAVerySecurePassword"
