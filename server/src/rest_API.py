@@ -86,7 +86,7 @@ class removeFamilyInImage(Resource):
         timestamp = (request.args).get("timestamp")
         compreface_uuid = filemanagement.getComprefaceUuidFromDatabase(timestamp)
         if compreface_uuid == None:
-            return "Timestamp not found", 400
+            return "Error: timestamp not found", 400
         test = str(categorize.deleteImage(compreface_uuid))
         print(test)
         return "Ok", 200
@@ -138,6 +138,8 @@ class postNewFamilyMember(Resource):  # /postnewfamilymember?name=<name>
 class removeFamilyMember(Resource):
     def post(self):
         family_name = (request.args).get("name")
+        if family_name == "":
+            return "Error: blank family name", 400
         status = categorize.removeFamilyMember(family_name)
         if status.get("code") == 42:
             return "Error: person does not exist in family", 400
