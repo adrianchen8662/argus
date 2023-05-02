@@ -1,34 +1,25 @@
 import cv2
-import sys
-import socket  # maybe use this for sending files, but if there's a library that does HTTPS connections use that instead
 from pathlib import Path
-import time
-from datetime import datetime
-import os
-import requests
+from time import time
+from os.path import join
+
+import constants
+
+import connect
+import filemanagement
+import encrypt
 
 
-def cleanLogs(log_path):
-    cache_list = os.listdir(log_path)
-    current_date_time = datetime.now().strftime("%m-%d-%Y,%H-%M-%S")
-
-
-if __name__ == "__main__":
-    casc_path = (
-        str(Path(__file__).parent.parent) + r"\data\haarcascade_frontalface_default.xml"
-    )
-    log_path = str(Path(__file__).parent.parent) + r"\logs"
-    face_cascade = cv2.CascadeClassifier(casc_path)
-
+def detection():
+    face_cascade = cv2.CascadeClassifier(constants.FACE_REG_DATA_PATH)
+    print("Video Capture Starting")
+    print(constants.FACE_REG_DATA_PATH)
     video_capture = cv2.VideoCapture(0)
 
     send_delay = 0
 
     # main loop that will keep running
     while True:
-        # cleans old pictures from log folder
-        cleanLogs(log_path)
-
         # Capture frame-by-frame
         ret, frame = video_capture.read()
         _, save_frame = video_capture.read()
@@ -88,7 +79,7 @@ if __name__ == "__main__":
                 cv2.LINE_AA,
             )
         # Draw a rectangle around the faces
-        for (x, y, w, h) in faces:
+        for x, y, w, h in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         """
         Conditions:
@@ -96,32 +87,32 @@ if __name__ == "__main__":
         Last sent image was 10 seconds or more ago
         width and height of the detected face is greater than 100, aka someone who is close enough to the doorbell. 
         """
-        if weights > 5 and time.time() > send_delay and w > 100 and h > 100:
-            print("Taking a photo, cheese!")
-            print("width = ", w, "  height = ", h)
-            send_delay = time.time()
+        if weights > 5 and time() > send_delay and w > 100 and h > 100:
+            send_delay = time()
             send_delay += 10
-            # possibly send two different images. One with just the face, and one the entire frame with or without the bounding box
-            cv2.imwrite(
-                os.path.join(
-                    log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"
-                ),
-                save_frame,
-            )
-            """
-            url = "http://100.112.129.66"
-            files = {'media': open(os.path.join(log_path, datetime.now().strftime("%m-%d-%Y,%H-%M-%S") + ".jpg"), 'rb')}
-            try:
-                requests.post(url, files=files)
-            except:
-                print("Failed to send")
-            """
+            file_name = str(int(time())) + ".jpg"
+            file_path = join(constants.LOG_PATH, file_name)
+            encoded_file_name = str(int(time())) + ".enc"
+            encoded_file_path = join(constants.LOG_PATH, encoded_file_name)
+            cv2.imwrite(file_path, save_frame)
+
+            # encrypt file
+            encrypt.encode(file_path, encoded_file_path)
+
+            # send file
+            if connect.sendFrame(encoded_file_path, encoded_file_name) == True:
+                filemanagement.updateLogs(file_name, "Sent")
+                filemanagement.updateStatus("True")
+            else:
+                filemanagement.updateLogs(file_name, "Not Sent")
+                filemanagement.updateStatus("False")
+
         # Display the resulting frame
-        cv2.imshow("Video", frame)
+        # cv2.imshow("Video", frame)
 
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
     # When everything is done, release the capture
     video_capture.release()
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
