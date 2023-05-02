@@ -6,3 +6,6 @@ redis
 flask
 flask_restful
 flask_cors
+imageai
+torchvision
+torch

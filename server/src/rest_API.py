@@ -12,6 +12,7 @@ import constants
 import filemanagement
 import decrypt
 import categorize
+import logodetection
 
 app = Flask(__name__)
 CORS(app)
@@ -167,8 +168,8 @@ class getMetadata(Resource):  # /getmetadata?timestamp=<timestamp>
         if metadata == None:
             return "Error: no entry with given timestamp found", 400
         return_dict[timestamp] = metadata
-        return return_dict, 200 # TODO: check what this returns
-
+        return return_dict, 200
+    
 
 # gets an image from the doorbell and processes it
 class postImage(Resource):  # /postimage
@@ -203,7 +204,26 @@ class postImage(Resource):  # /postimage
                     .get("subjects")[0]
                 )
             except:
-                # NOTE: add logo detection here
+                if logodetection.logo_detection(constants.DATA_STORAGE_FOLDER_PATH + (file.filename).split(".")[0] + ".jpg"):
+                    filemanagement.addMetadataToDatabase(
+                        file.filename.split(".")[0],
+                        date_to_store,
+                        time_to_store,
+                        "Delivery",
+                        "None",
+                        "Delivery",
+                        "1",
+                    )
+                else:
+                    filemanagement.addMetadataToDatabase(
+                        file.filename.split(".")[0],
+                        date_to_store,
+                        time_to_store,
+                        "Unknown",
+                        "None",
+                        "Unknown",
+                        "1",
+                    )
                 return "Ok", 200
             else:
                 if recognize_dict.get("similarity") < 0.7:
