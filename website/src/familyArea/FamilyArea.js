@@ -18,13 +18,14 @@ class FamilyArea extends React.PureComponent {
     this.handleMemberClick = this.handleMemberClick.bind(this);
     this.handleAddClick = this.handleAddClick.bind(this);
     this.handleBackClick = this.handleBackClick.bind(this);
+    this.handleRemoveUser = this.handleRemoveUser.bind(this);
 
     this.state = {
       currentFamilyView: FamilyAreaViews.all_members,
       familyList: null,
       memberId: null,
       memberName: '',
-      memberPhoto: null,
+      // memberPhoto: null,
       leadFrameList: null,
     }
   }
@@ -68,10 +69,23 @@ class FamilyArea extends React.PureComponent {
   };
 
   handleNewMember= async (event) => {
-    const { memberName, memberPhoto } = this.state;
+    const { memberName } = this.state;
     event.preventDefault();
     try {
       fetch(`${apiHost}/postnewfamilymember?name=${memberName}`, {
+        method: "POST",
+      }).then((res) => console.log(res));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  handleRemoveUser = async (event) => {
+    const { memberId } = this.state;
+    // event.preventDefault();
+    console.log(memberId);
+    try {
+      fetch(`${apiHost}/removefamilymember?name=${memberId}`, {
         method: "POST",
       }).then((res) => console.log(res));
     } catch (err) {
@@ -97,7 +111,7 @@ class FamilyArea extends React.PureComponent {
 
   oneMember = () => {
     const { memberId, familyList } = this.state;
-    return (<FamilyMemberFrames memberId={memberId} backHandler={this.handleBackClick.bind(this)} />);
+    return (<FamilyMemberFrames memberId={memberId} removeUserHandler={this.handleRemoveUser} backHandler={this.handleBackClick.bind(this)} />);
   }
 
   addMember = () => {

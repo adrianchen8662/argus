@@ -61,13 +61,13 @@ class FamilyMemberFrames extends React.PureComponent {
   }
 
   render() {
-    const { memberId, backHandler } = this.props; 
+    const { memberId, backHandler, removeUserHandler } = this.props; 
     const {frameList} = this.state;
-    const images = require.context('../../../public/img/data_storage', true);
-    let img = "";
-    if(frameList && frameList.length) { 
-      img = images(`./${frameList[0].key}.jpg`);
-    }
+    // const images = require.context('../../../public/img/data_storage', true);
+    // let img = "";
+    // if(frameList && frameList.length) { 
+    //   img = images(`./${frameList[0].key}.jpg`);
+    // }
 
     return (
       <div className="memberFramesContainer movingIn">
@@ -81,8 +81,9 @@ class FamilyMemberFrames extends React.PureComponent {
           <div className="memberHeaderName">
             {memberId}
           </div>
-          <div className="memberHeaderDetails">
-            {frameList && <img className="memberImg headerImg" src={`${img}`} alt="profile img"/>}
+          <div className="backButtonContainer" onClick={() => removeUserHandler()}>
+            <span className=" backButtonHelp">remove&nbsp;&nbsp;X</span>
+            {/* {frameList && <img className="memberImg headerImg" src={`${img}`} alt="profile img"/>} */}
           </div>
         </div>
         <div id="memberFramesComponent">
