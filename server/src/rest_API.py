@@ -29,7 +29,7 @@ class getStatusLogs(Resource):  # /getstatuslogs
             list_of_keys[i] = list_of_keys[i].decode("utf-8")
         for key in list_of_keys:
             return_dict[key] = filemanagement.getMetadataFromDatabase(key)
-            
+
         ordered_dict = collections.OrderedDict(sorted(return_dict.items()))
         return ordered_dict, 200
 
@@ -63,7 +63,7 @@ class getStatus(Resource):  # /getstatus
             return_dict["Doorbell"] = False
         else:
             return_dict["Doorbell"] = True
-        
+
         return return_dict, 200
 
 
@@ -115,14 +115,14 @@ class getFamilyMemberFrames(Resource):
             list_of_keys[i] = list_of_keys[i].decode("utf-8")
         for key in list_of_keys:
             return_dict[key] = filemanagement.getMetadataFromDatabase(key)
-        
+
         for key, value in return_dict.items():
             if name in value:
                 found_dict[key] = value
-        
+
         ordered_dict = collections.OrderedDict(sorted(found_dict.items()))
         return ordered_dict, 200
-        
+
 
 # adds a new family member name
 class postNewFamilyMember(Resource):  # /postnewfamilymember?name=<name>
@@ -167,7 +167,7 @@ class getMetadata(Resource):  # /getmetadata?timestamp=<timestamp>
         if metadata == None:
             return "Error: no entry with given timestamp found", 400
         return_dict[timestamp] = metadata
-        return return_dict, 200 # TODO: check what this returns
+        return return_dict, 200  # TODO: check what this returns
 
 
 # gets an image from the doorbell and processes it
@@ -281,7 +281,7 @@ api.add_resource(getStatus, "/getstatus", endpoint="getStatus")
 api.add_resource(
     assignFamilyToImage, "/assignfamilytoimage", endpoint="assignFamilyToImage"
 )
-'''
+"""
 api.add_resource(
     removeFamilyInImage, "/removefamilyinimage", endpoint="removeFamilyInImage"
 )
@@ -289,7 +289,7 @@ api.add_resource(
 api.add_resource(
     changeFamilyInImage, "/changefamilyinimage", endpoint="changeFamilyInImage"
 )
-'''
+"""
 api.add_resource(
     getFamilyMemberFrames, "/getfamilymemberframes", endpoint="getFamilyMemberFrames"
 )

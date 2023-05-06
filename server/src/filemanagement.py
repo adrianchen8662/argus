@@ -42,7 +42,9 @@ def setDatabaseSettings(address, port):
 
 
 def testConnectionToDatabase():
-    r = redis.Redis("127.0.0.1", socket_connect_timeout=1) # TODO: should be changed based on redisdatabasesettings.json
+    r = redis.Redis(
+        "127.0.0.1", socket_connect_timeout=1
+    )  # TODO: should be changed based on redisdatabasesettings.json
     r.ping()
 
 

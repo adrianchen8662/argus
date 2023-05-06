@@ -6,6 +6,7 @@ from json import load
 import constants
 import filemanagement
 
+
 def testConnectiontoCompreface():
     config = load(open(constants.COMPREFACE_SETTINGS_PATH))
     DOMAIN = config["Compreface Settings"][0]["Domain"]
@@ -124,9 +125,9 @@ def deleteImage(image_id):
         last_face: dict = faces[len(faces) - 1]
         for i in faces:
             print(i)
-            
-        #return_value = face_collection.delete(last_face.get("image_id"))
-        #print(return_value)
+
+        # return_value = face_collection.delete(last_face.get("image_id"))
+        # print(return_value)
     else:
         return "No subject found"
 

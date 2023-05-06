@@ -40,6 +40,7 @@ def logo_detection(input_image_path):
         return True
     else:
         return False
-    
+
+
 if __name__ == "__main__":
     print(logo_detection("../../data_storage/1683003168.jpg"))
