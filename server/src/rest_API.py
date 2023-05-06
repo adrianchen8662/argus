@@ -207,7 +207,6 @@ class postImage(Resource):  # /postimage
                 return "Ok", 200
             else:
                 if recognize_dict.get("similarity") < 0.7:
-                    # NOTE: add logo detection here
                     filemanagement.addMetadataToDatabase(
                         file.filename.split(".")[0],
                         date_to_store,
@@ -318,4 +317,4 @@ api.add_resource(
     postComprefaceSettings, "/postcomprefacesettings", endpoint="postComprefaceSettings"
 )
 
-app.run(host="192.168.1.125", port=5050, debug=True)
+app.run(host="100.106.18.99", port=5050, debug=True)

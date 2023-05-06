@@ -1,7 +1,4 @@
 import redis
-import cv2  # might need apt-get install libgl1
-import numpy as np
-import os
 import json
 
 import constants
