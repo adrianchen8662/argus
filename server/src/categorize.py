@@ -4,6 +4,7 @@ from compreface.collections import FaceCollection, Subjects
 from json import load
 
 import constants
+import filemanagement
 
 
 def testConnectiontoCompreface():
@@ -117,9 +118,16 @@ def deleteImage(image_id):
 
     faces: list = face_collection.list().get("faces")
 
+    print(image_id)
+    print(filemanagement.getComprefaceUuidFromDatabase(image_id))
+
     if len(faces) != 0:
         last_face: dict = faces[len(faces) - 1]
-        face_collection.delete(last_face.get(image_id))
+        for i in faces:
+            print(i)
+
+        # return_value = face_collection.delete(last_face.get("image_id"))
+        # print(return_value)
     else:
         return "No subject found"
 

@@ -1,9 +1,7 @@
 body {
-    background: rgb(254, 200, 154);
-    background: radial-gradient(circle, rgba(254, 200, 154, 1) 0%, rgb(195, 222, 206) 79%);
+    background-color: #000;
     margin: 0;
     width: 100%;
-    /* backdrop-filter: blur(5px); */
     overflow-y: hidden;
 }
 
@@ -45,4 +43,28 @@ img {
     to {
         opacity: 100%;
     }
+}
+
+.Delivery span {
+    color: #7EBDC2!important;
+}
+
+.Unknown span {
+    color: #B3001B!important;
+}
+
+.Family span {
+    color: #9BE564!important;
+}
+
+.Delivery {
+    color: #7EBDC2!important;
+}
+
+.Unknown {
+    color: #B3001B!important;
+}
+
+.Family {
+    color: #9BE564!important;
 }

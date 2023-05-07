@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  argus-doorbell-backend:
+    build: ./react_frontend
+    container_name: "argus-backend"
+    ports:
+      - "5050:5050"
+    networks:
+      - my-network
+
+  argus-doorbell-frontend:
+    build: ./doorbell_backend
+    container_name: "argus-frontend"
+    ports:
+      - "5000:5000"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true

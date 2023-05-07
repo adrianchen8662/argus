@@ -79,11 +79,40 @@ services:
       - UWSGI_PROCESSES=${uwsgi_processes:-2}
       - UWSGI_THREADS=${uwsgi_threads:-1}
 
+  argus-server-backend:
+    build: ./server
+    container_name: "argus-backend"
+    ports:
+      - "5050:5050"
+    volumes:
+      - /data_storage:/home/adrian/Documents/Argus-Images
+    depends_on:
+      - cache
+      - compreface-api
+    networks:
+      - my-network
+
+  argus-server-frontend:
+    build: ./website
+    container_name: "argus-frontend"
+    ports:
+      - "5000:5000"
+    volumes:
+      - /public/img/data_storage:/home/adrian/Documents/Argus-Images
+    depends_on:
+      - argus-server-backend
+    networks:
+      - my-network
+
   cache:
-    image: 	redis/redis-stack:latest
+    image: redis/redis-stack:latest
     container_name: "argus_database"
     restart: always
     ports:
       - "6379:6379"
     volumes: 
       - server-image-data:/var/lib/imagedatabase
+
+networks:
+  my-network:
+    external: true

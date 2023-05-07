@@ -1,25 +1,21 @@
 .frame {
-    background-color: #d9d9d9;
-    height: 480px;
+    background-color: #000;
     width: 640px;
     border-radius: 10px;
-    border: 5px solid #1F2041;
-    margin-bottom: 30px;
     overflow: hidden;
     user-select: none;
-    /* animation: 4s 1 alternate slidein; */
 }
 
 .frame-Unknown {
-    border: 5px solid #BF3100;
+    border: 6px solid #a6254c;
 }
 
 .frame-Family {
-    border: 5px solid #8EA604;
+    border: 6px solid #9BE564;
 }
 
 .frame-Delivery {
-    border: 5px solid #1F2041;
+    border: 6px solid #A8F9FF;
 }
 
 @keyframes slidein {
@@ -28,5 +24,11 @@
     }
     to {
         opacity: 100%;
+    }
+}
+
+@media (max-height: 800px) {
+    .frame {
+        width: 600px;
     }
 }

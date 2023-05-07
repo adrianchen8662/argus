@@ -1,0 +1,6 @@
+numpy
+opencv-python
+pycryptodome
+flask
+flask_restful
+flask_cors

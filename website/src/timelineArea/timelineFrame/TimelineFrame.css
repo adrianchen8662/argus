@@ -1,9 +1,11 @@
 .timelineFrame {
     width: calc(640px/3);
     margin: 5px;
-    background-color: #FFF8F0;
     display: flex;
     flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+    border: #fff 3px solid;
 }
 
 .timelineAlbumText {
@@ -20,13 +22,10 @@
     padding: 10px 0px;
 }
 
-.timelineAlbumText span {}
-
 .timelineAlbumText .timelineAlbumType {
     padding: 10px;
     font-family: 'Unbounded', cursive;
     color: #FFF8F0;
-    border-radius: 10px;
     width: 55px;
     margin-left: 10px;
     text-align: center;
@@ -38,7 +37,7 @@
 
 .timelineAlbumText .timelineAlbumTime {
     font-family: 'Libre Baskerville', serif;
-    color: #080708;
+    color: #fff;
     font-size: 20px;
     display: inline-block;
     width: 100%;

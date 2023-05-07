@@ -9,10 +9,11 @@ For more in-depth information and design choices made, check out [Adrian Chen's 
 The repositories are split between the code used for the doorbell, and the code used for the server. 
 
 ## Building and installing Argus
-[To be determined. The packaging solution has not been decided yet, as there are multiple languages being used.]
+There's a docker-compose.yml in the main directory and the /doorbell directory. The docker-compose.yml in the main directory is for the server, and the /doorbell directory is for the doorbell. The docker-compose.yml might require modification on the shared volume and the network being used, as each system is different. 
 
 ## Using Argus
-[To be determined. The frontend of both the server and doorbell are currently in development.]
+Doorbell setup: input the ip address and port of the server, and the password that will be used to encrypt files being sent.  
+Server setup: input the ip address and port of the doorbell, and the password that will be used to encrypt files being sent. Input the ip address and port of the database, and Compreface API.  
 
 # Credits
 ## Team Members
@@ -28,8 +29,6 @@ Santiago Torres-Arias
 [OpenCV](https://github.com/opencv/opencv) - Used in the doorbell for quick detection of faces  
 [ReactJS](https://github.com/facebook/react) - Used for the frontend for the doorbell and server  
 [Python3](https://github.com/python/cpython) - Used for the backend for the doorbell and server  
-
-For a more comprehensive list of software used, such as libraries, check out the [bill of materials](). 
 
 # License
 This project is released under the [GPL-3.0 license](https://github.com/adrianchen8662/argus/blob/main/LICENSE). For the full software bill of materials, SBOM, please see this document. 

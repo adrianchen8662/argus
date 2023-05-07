@@ -3,57 +3,73 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
 .memberContainer {
     width: 60%;
-    background-color: rgba(31, 32, 65, 1);
+    background-color: #fff;
     padding: 2%;
     border-radius: 10px;
-    border: 5px solid #1F2041;
+    border: 6px solid #fff;
     display: flex;
     flex-direction: row;
     align-items: stretch;
 }
 
 .memberImg {
-    background-color: #d9d9d9;
+    /* background-color: #d9d9d9; */
     height: 250px;
     width: 250px;
-    border-radius: 50%;
-    border: 5px solid #1F2041;
+    border-radius: 10%;
+    border: 3px solid #539D1B;
     margin: 10px;
     overflow: hidden;
-    /* animation: 4s 1 alternate slidein; */
 }
 
 .headerImg {
     height: 100px;
-    width: auto;
-    border: 0px;
+    width: 100px;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-sizing: border-box;
 }
 
 .memberDetails {
     font-family: 'Unbounded', cursive;
+    width: 256px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    /* margin: 2%; */
     border-radius: 5%;
     border: 5px solid rgba(0, 0, 0, 0);
     font-size: 25px;
+    /* background-color: #fff; */
 }
 
 .memberDetails:hover {
-    border-radius: 5%;
-    border: 5px solid #1F2041;
+    -webkit-filter: drop-shadow( 0px 0px 6px #9be564);
+    filter: drop-shadow( 0px 0px 6px #9be564);
     cursor: pointer;
-    /* animation: bounce 1s infinite alternate; */
+}
+
+.memberLead {
+    width: auto;
+    height: 100%;
+    border: 0px;
+}
+
+.memberLead path {
+    fill: #fff;
 }
 
 .memberDetails span {
     font-family: 'Inter', sans-serif;
+    color: #fff;
+}
+
+.memberName {
+    color: #fff;
 }
 
 .memberFrames {
-    border-left: 2px solid #1F2041;
+    border-left: 2px solid #fff;
 }
 
 .hideDetail {
@@ -66,30 +82,106 @@
 
 .memberFramesHeader {
     width: 100%;
+    height: 100px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 5px solid #fff;
+    padding: 0 20px;
 }
 
 .memberHeaderName {
     width: 33%;
     text-align: center;
+    color: #fff;
+    font-family: 'Unbounded', cursive;
+    font-size: 30px;
+}
+
+.memberHeaderDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    width: 33%;
 }
 
 #backButton {
-    height: 6vh;
+    height: 30px;
     width: auto;
     cursor: pointer;
-    /* border: 4px solid #000; */
-    /* border-radius: 50% 50% 50% 50%; */
 }
 
 .backButtonContainer {
-    font-size: 20px;
+    display: flex;
+    width: 33%;
+    flex-direction: row;
+    /* justify-content: flex-start; */
+    column-gap: 5px;
+    align-items: center;
+}
+
+.backButtonHelp {
+    color: #fff;
+    font-family: 'Unbounded', cursive;
+    font-size: 15px;
+}
+
+.backButtonComponent {
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* border-radius: 50%; */
+    /* background-color: #fff; */
+}
+
+.backButtonContainer:hover {
+    -webkit-filter: drop-shadow( 0px 0px 6px #9be564);
+    filter: drop-shadow( 0px 0px 6px #9be564);
+    cursor: pointer;
+}
+
+#memberFramesComponent {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.memberFrameHeading {
+    color: #fff;
+    font-family: 'Unbounded', cursive;
+    font-size: 25px;
+}
+
+#memberFramesScroller {
+    flex-grow: 1;
+    overflow-y: scroll;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    flex-wrap: wrap;
+    height: calc();
+    overflow-y: scroll;
+    justify-items: center;
+}
+
+.addtofamilyButton {
+    width: 60px;
+}
+
+.addtofamilyHelp {
+    font-family: 'Unbounded', cursive!important;
+}
+
+.addMemberContainer {
+    width: 241px;
 }
 
 img {
@@ -114,5 +206,23 @@ img {
     to {
         font-size: 26px;
         line-height: 26px;
+    }
+}
+
+@media (max-width: 1500px) {
+    #memberFramesScroller {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    #memberFramesScroller {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    #memberFramesScroller {
+        grid-template-columns: repeat(1, 1fr);
     }
 }

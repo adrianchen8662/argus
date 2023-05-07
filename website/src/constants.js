@@ -2,7 +2,7 @@ export const Areas = {
   frame_area: "FRAME_AREA",
   family_area: "FAMILY_AREA",
   timeline_area: "TIMELINE_AREA",
-  live_area: "LIVE_AREA",
+  error_area: "ERROR_AREA",
 }
 
 export const Events = {
@@ -14,31 +14,32 @@ export const Events = {
 export const FamilyAreaViews = {
   all_members: "ALL_MEMBERS",
   one_member: "ONE_MEMBER",
+  add_member: "ADD_MEMBER"
 }
 
 export const months = {
-  1: "Jan",
-  2: "Feb",
-  3: "Mar",
-  4: "Apr",
-  5: "May",
-  6: "Jun",
-  7: "Jul",
-  8: "Aug",
-  9: "Sep",
-  10: "Oct",
-  11: "Nov",
-  12: "Dec"
+  0: "Jan",
+  1: "Feb",
+  2: "Mar",
+  3: "Apr",
+  4: "May",
+  5: "Jun",
+  6: "Jul",
+  7: "Aug",
+  8: "Sep",
+  9: "Oct",
+  10: "Nov",
+  11: "Dec"
 }
 
 export const days = {
-  1: "Monday",
-  2: "Tuesday",
-  3: "Wednesday",
-  4: "Thursday",
-  5: "Friday",
-  6: "Saturday",
-  7: "Sunday"
+  0: "Monday",
+  1: "Tuesday",
+  2: "Wednesday",
+  3: "Thursday",
+  4: "Friday",
+  5: "Saturday",
+  6: "Sunday"
 }
 
 
@@ -72,13 +73,29 @@ export const calcTime = (timestamp) => {
 }
 
 export const getDateFromImgSrc = (imgSrc) => {
-  const timestamp = imgSrc.split('_')[0];
+  const timestamp = imgSrc;
   return calcDateNoDay(timestamp);
 }
 
 export const getTimeFromImgSrc = (imgSrc) => {
-  const timestamp = imgSrc.split('_')[0];
+  const timestamp = imgSrc;
   return calcTime(timestamp);
+}
+
+export const getTimestampFromImgSrc = (imgSrc) => {
+  const timestamp = imgSrc;
+  return timestamp;
+}
+
+export const getConnVals = (connString) => {
+  const connArr = connString.split(',');
+  const connDict = {};
+  connArr.forEach((connStr) => {
+    const connStrArr = connStr.split(':');
+    const re = /{|}| /g;
+    connDict[connStrArr[0].replace(re, '')] = connStrArr[1].replace(re, '') === "true"
+  });
+  return connDict
 }
 
 export const TIMELINE_VIEWS = {
@@ -87,3 +104,7 @@ export const TIMELINE_VIEWS = {
   details_view: "DETAILS_VIEW",
   approvefamily_view: "APPROVE_VIEW",
 }
+
+export const getFileNameFromTimestamp = (timestamp) => `${timestamp}.jpg`
+
+export const apiHost = "http://100.106.18.99:5050" // "http://localhost:8010/proxy"

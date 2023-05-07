@@ -1,0 +1,13 @@
+{
+    "Connection Settings": [
+        {
+            "Host": "100.112.129.66"
+        },
+        {
+            "Port": "5000"
+        },
+        {
+            "AES Encryption Password": "ThisIsAVerySecurePassword"
+        }
+    ]
+}

@@ -2,25 +2,45 @@
 import "./TimelineArea.css";
 import React from "react";
 import { connect } from "react-redux";
-import { ReactComponent as TimelineHead } from "../statics/timelinehead.svg";
 import TimelineFrame from "./timelineFrame/TimelineFrame";
-import { frameDetails } from "../statics/testDetails"
-
-const allFrames = frameDetails.frames.map((frame) => <TimelineFrame type={frame.type} imgSrc={frame.img} imgId={frame.id}/>);
 
 
 class TimelineArea extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      allFrames: null
+    };
   }
-  
+
+  componentDidMount() {
+    this.initTimelineArea();
+  }
+
+  componentDidUpdate() {
+    this.initTimelineArea();
+  }
+
+  initTimelineArea() {
+    const { allFrames } = this.state;
+    const { getFramesList, framesReady } = this.props;
+    let frameList = null;
+    if(!allFrames && framesReady) {
+      frameList = getFramesList();
+      console.log("didUpdate", frameList);
+      if(frameList) {
+        this.setState({
+          allFrames: frameList.slice(0).reverse().map((frame) =>  <TimelineFrame type={frame.Identification} imgSrc={frame.Filename} imgId={frame["Compreface ID"]}/>),
+        });
+      }
+    }
+  }
+
   render() {
+    const {allFrames} = this.state;
     return (
       <div id="timelineArea" className="mainViewArea">
         <div id="timelinePhotosArea" className="movingIn">
-          {allFrames}
-          {allFrames}
           {allFrames}
         </div>
       </div>

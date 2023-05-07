@@ -3,42 +3,37 @@
 
 import "./FamilyMember.css";
 import React from "react";
+import {ReactComponent as AddtoFamily} from "../../statics/addtofamily2.svg"
+import {ReactComponent as FamilyMemberImg} from "../../statics/People.svg"
 
 class FamilyMember extends React.PureComponent {
-  // constructor(props) {
-  //   super(props);
-  //   this.handleMouseEnter = this.handleMouseEnter.bind(this);
-  //   this.handleMouseExit = this.handleMouseExit.bind(this);
-  //   this.state = {
-  //       hover: false
-  //   };
-  // }
-
-  // handleMouseEnter() {
-  //   this.setState({
-  //       hover: true
-  //   })
-  // }
-
-  // handleMouseExit() {
-  //   this.setState({
-  //       hover: false
-  //   })
-  // }
-
-  //  
   render() {
-    const { imgSrc, name, clickHandler, familyMemberId } = this.props; 
-    // const { hover } = this.state;
+    const { getImgSrc, name, clickHandler, familyMemberId } = this.props; 
+    const images = require.context('../../../public/img/data_storage', true);
+    let img = "";
+    if(getImgSrc && getImgSrc(name)) { 
+      img = (<img src={images(`./${getImgSrc(name)}.jpg`)} className="memberLead headerImg" alt="Test Frame" />);
+    } else if (getImgSrc && !getImgSrc(name)) {
+      img = <FamilyMemberImg className="memberLead headerImg"/>
+    }
+    if(familyMemberId === "+") {
+      return (
+        <div className="memberDetails addMemberContainer" onClick={() => clickHandler(familyMemberId)}>
+          {/* <div className="memberName"> */}
+            <AddtoFamily className="addtofamilyButton" />
+            <span className="addtofamilyHelp">N E W</span>
+          {/* </div> */}
+        </div>
+      )
+    }
+    
     return (
       <div className="memberDetails" onClick={() => clickHandler(familyMemberId)}>
-         {/* onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseExit}> */}
         <div className="memberImg">
-          <img src={imgSrc} alt="Test Frame" />
+          { img }
         </div>
         <div className="memberName">
           {name} 
-          {/* {hover && <span>-&gt;</span>} */}
         </div>
       </div>
       

@@ -1,10 +1,20 @@
 #frameArea {
-    /* min-height: 100vh; */
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     font-size: calc(10px + 2vmin);
     color: #070600;
+}
+
+.slideArrow {
+    height: 50px;
+    -webkit-filter: drop-shadow( 0px 0px 18.16px #FFFFFF);
+    filter: drop-shadow( 0px 0px 18.16px #FFFFFF);
+    cursor: pointer;
+}
+
+.hideArrow {
+    visibility: hidden;
 }
